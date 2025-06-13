@@ -17,24 +17,38 @@ const VOICE_LIST = [
 let extensionEnabled = true;
 let volume = 0.5;
 let vocalIndex = 0;
+let falloffTime = 0.3;
+let pitchVariation = 100;
+let specialPunctuation = false;
 
 export const enablingText = "Enabled Animalese Sounds. Type away!";
 export const disablingText = "Disabled Animalese Sounds.";
 
 export function activate(context: vscode.ExtensionContext) {
     const config = vscode.workspace.getConfiguration("vscode-animalese");
-    volume = (config.get<number>("volume") || 50) / 100;
+    volume = (config.get<number>("volume") ?? 50) / 100;
     vocalIndex = VOICE_LIST.indexOf(
-        config.get<string>("voice") || "Female Voice 1 (Sweet)"
+        config.get<string>("voice") ?? "Female Voice 1 (Sweet)"
     );
+    falloffTime = config.get<number>("intonation.falloffTime") ?? 0.3;
+    pitchVariation = config.get<number>("intonation.pitchVariation") ?? 100;
+    specialPunctuation = config.get<boolean>("specialPunctuation") ?? false;
 
     vscode.workspace.onDidChangeConfiguration((event) => {
         if (!event.affectsConfiguration("vscode-animalese")) return;
-        volume = (config.inspect<number>("volume")?.globalValue || 50) / 100;
+        volume = (config.inspect<number>("volume")?.globalValue ?? 50) / 100;
         vocalIndex = VOICE_LIST.indexOf(
-            config.inspect<string>("voice")?.globalValue ||
+            config.inspect<string>("voice")?.globalValue ??
                 "Female Voice 1 (Sweet)"
         );
+        falloffTime =
+            config.inspect<number>("intonation.falloffTime")?.globalValue ??
+            0.3;
+        pitchVariation =
+            config.inspect<number>("intonation.pitchVariation")?.globalValue ??
+            100;
+        specialPunctuation =
+            config.inspect<boolean>("specialPunctuation")?.globalValue ?? false;
     });
 
     const toggleCmd = vscode.commands.registerCommand(
@@ -147,8 +161,7 @@ export function activate(context: vscode.ExtensionContext) {
                 break;
             }
             case key === "!" || key === "?": {
-                if (true) {
-                    // ADD PUNCTUATION NOISE SETTING
+                if (specialPunctuation) {
                     const noise = { "!": "Gwah", "?": "Deska" };
                     filePath = path.join(
                         __dirname,
@@ -183,14 +196,14 @@ export function activate(context: vscode.ExtensionContext) {
         const audioData = await audioContext.decodeAudioData(audioBuffer);
         const source = audioContext.createBufferSource();
         source.buffer = audioData;
-        source.detune.value = "1234567890-=".split("").includes(key)
+        source.detune.value = "1234567890-=!?".split("").includes(key)
             ? 0
-            : Math.random() * 200 - 100;
+            : Math.random() * pitchVariation * 2 - pitchVariation;
         const gainNode = audioContext.createGain();
         gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
         gainNode.gain.linearRampToValueAtTime(
             0,
-            audioContext.currentTime + 0.4
+            audioContext.currentTime + falloffTime
         );
         source.connect(gainNode);
         gainNode.connect(audioContext.destination);

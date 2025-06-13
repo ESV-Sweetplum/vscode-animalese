@@ -43,7 +43,10 @@
                 "vscode-animalese.volume": {
                     "type": "integer",
                     "default": "50",
-                    "description": "This value dictates, in percentage, how loud the animalese sounds should be."
+                    "description": "This value dictates, in percentage, how loud the animalese sounds should be.",
+                    "order": 1,
+                    "minimum": 0,
+                    "maximum": 100
                 },
                 "vscode-animalese.voice": {
                     "type": "string",
@@ -58,7 +61,26 @@
                         "Male Voice 4 (Cranky)"
                     ],
                     "default": "Female Voice 1 (Sweet)",
-                    "description": "Determines the voice that will be talking. This setting only applies to alphanumerical characters."
+                    "description": "Determines the voice that will be talking. This setting only applies to alphanumerical characters.",
+                    "order": 2
+                },
+                "vscode-animalese.specialPunctuation": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Overrides the default sounds for the keys `!` and `?`.",
+                    "order": 3
+                },
+                "vscode-animalese.intonation.falloffTime": {
+                    "type": "number",
+                    "default": "0.3",
+                    "description": "When a key is pressed, the audio slowly fades out over the course of the track. This value determines how many seconds it takes before the audio fully fades out.",
+                    "minimum": 0
+                },
+                "vscode-animalese.intonation.pitchVariation": {
+                    "type": "integer",
+                    "default": "100",
+                    "description": "For any key except for vocal keys, randomly shift the pitch of the audio up or down by, at most, the amount of Hz given.",
+                    "minimum": 0
                 }
             }
         }
