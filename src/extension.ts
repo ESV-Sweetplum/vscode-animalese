@@ -158,7 +158,8 @@ export function activate(context: vscode.ExtensionContext) {
                 break;
             }
             default: {
-                return;
+                filePath = path.join(__dirname, `..\\audio\\sfx\\default.mp3`);
+                break;
             }
         }
 
