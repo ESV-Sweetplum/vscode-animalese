@@ -67,7 +67,7 @@
                 "vscode-animalese.specialPunctuation": {
                     "type": "boolean",
                     "default": false,
-                    "markdownDescription": "Overrides the default sounds for the keys `!` and `?`.",
+                    "markdownDescription": "Overrides the default sounds for the keys `!`, `?`, and `Enter`.",
                     "order": 3
                 },
                 "vscode-animalese.intonation.falloffTime": {

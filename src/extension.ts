@@ -135,7 +135,11 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(setVolumeCmd);
     vscode.workspace.onDidChangeTextDocument(async (event) => {
         if (!extensionEnabled || !event.contentChanges.length) return;
-        const key = event.contentChanges[0].text.slice(0, 1);
+        let key = event.contentChanges[0].text.replaceAll("\r", "").slice(0, 1);
+        if (/^( ){2,}$/.test(event.contentChanges[0].text)) {
+            key = "tab";
+        }
+        if (event.contentChanges[0].rangeLength > 0) key = "backspace";
         let filePath = "";
         switch (true) {
             case "abcdefghijklmnopqrstuvwxyz"
@@ -160,23 +164,29 @@ export function activate(context: vscode.ExtensionContext) {
                 );
                 break;
             }
-            case key === "!" || key === "?": {
+            case key === "!" || key === "?" || key.includes("\n"): {
                 if (specialPunctuation) {
-                    const noise = { "!": "Gwah", "?": "Deska" };
+                    const noise = { "!": "Gwah", "?": "Deska", "\n": "OK" };
                     filePath = path.join(
                         __dirname,
                         `..\\audio\\animalese\\${
                             vocalIndex <= 3 ? "female" : "male"
-                        }\\voice_${(vocalIndex % 4) + 1}\\${noise[key]}.mp3`
+                        }\\voice_${(vocalIndex % 4) + 1}\\${
+                            noise[key as keyof typeof noise]
+                        }.mp3`
                     );
                     break;
                 }
             }
-            case "~@#$%^&*(){}[]\\".split("").includes(key): {
+            case "~@#$%^&*(){}[]/\\".split("").includes(key): {
                 filePath = path.join(
                     __dirname,
-                    `..\\audio\\sfx\\${symbolToName(key)}.mp3`
+                    `..\\audio\\sfx\\${symbolToName(key) ?? "default"}.mp3`
                 );
+                break;
+            }
+            case ["tab", "backspace"].includes(key): {
+                filePath = path.join(__dirname, `..\\audio\\sfx\\${key}.mp3`);
                 break;
             }
             default: {
@@ -260,6 +270,15 @@ export function symbolToName(sym: string) {
         }
         case "?": {
             return "question";
+        }
+        case "\n": {
+            return "enter";
+        }
+        case "/": {
+            return "slash_forward";
+        }
+        case "\\": {
+            return "slash_back";
         }
     }
     return null;
