@@ -35,7 +35,33 @@
                 "command": "vscode-animalese.setVoice",
                 "title": "vscode-animalese: Set Animalese Voice"
             }
-        ]
+        ],
+        "configuration": {
+            "title": "VSCode Animalese",
+            "type": "object",
+            "properties": {
+                "vscode-animalese.volume": {
+                    "type": "integer",
+                    "default": "50",
+                    "description": "This value dictates, in percentage, how loud the animalese sounds should be."
+                },
+                "vscode-animalese.voice": {
+                    "type": "string",
+                    "enum": [
+                        "Female Voice 1 (Sweet)",
+                        "Female Voice 2 (Peppy)",
+                        "Female Voice 3 (Big Sister)",
+                        "Female Voice 4 (Snooty)",
+                        "Male Voice 1 (Jock)",
+                        "Male Voice 2 (Lazy)",
+                        "Male Voice 3 (Smug)",
+                        "Male Voice 4 (Cranky)"
+                    ],
+                    "default": "Female Voice 1 (Sweet)",
+                    "description": "Determines the voice that will be talking. This setting only applies to alphanumerical characters."
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run package",

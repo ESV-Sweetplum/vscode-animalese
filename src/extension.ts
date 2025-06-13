@@ -22,8 +22,20 @@ export const enablingText = "Enabled Animalese Sounds. Type away!";
 export const disablingText = "Disabled Animalese Sounds.";
 
 export function activate(context: vscode.ExtensionContext) {
-    volume = context.globalState.get("animalese-volume") || 0.5;
-    vocalIndex = context.globalState.get("animalese-vocalIndex") || 0;
+    const config = vscode.workspace.getConfiguration("vscode-animalese");
+    volume = (config.get<number>("volume") || 50) / 100;
+    vocalIndex = VOICE_LIST.indexOf(
+        config.get<string>("voice") || "Female Voice 1 (Sweet)"
+    );
+
+    vscode.workspace.onDidChangeConfiguration((event) => {
+        if (!event.affectsConfiguration("vscode-animalese")) return;
+        volume = (config.inspect<number>("volume")?.globalValue || 50) / 100;
+        vocalIndex = VOICE_LIST.indexOf(
+            config.inspect<string>("voice")?.globalValue ||
+                "Female Voice 1 (Sweet)"
+        );
+    });
 
     const toggleCmd = vscode.commands.registerCommand(
         "vscode-animalese.toggle",
@@ -65,10 +77,7 @@ export function activate(context: vscode.ExtensionContext) {
                         `Successfully set voice to ${v}.`
                     );
                     vocalIndex = VOICE_LIST.indexOf(v);
-                    context.globalState.update(
-                        "animalese-vocalIndex",
-                        vocalIndex
-                    );
+                    config.update("voice", VOICE_LIST[vocalIndex]);
                 });
         }
     );
@@ -105,13 +114,13 @@ export function activate(context: vscode.ExtensionContext) {
                         `Successfully set volume to ${percentage}%.`
                     );
                     volume = percentage / 100;
-                    context.globalState.update("animalese-volume", volume);
+                    config.update("volume", percentage);
                 });
         }
     );
     context.subscriptions.push(setVolumeCmd);
     vscode.workspace.onDidChangeTextDocument(async (event) => {
-        if (!extensionEnabled) return;
+        if (!extensionEnabled || !event.contentChanges.length) return;
         const key = event.contentChanges[0].text.slice(0, 1);
         let filePath = "";
         switch (true) {
