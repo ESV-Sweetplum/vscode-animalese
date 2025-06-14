@@ -90,10 +90,11 @@ export function activate(context: vscode.ExtensionContext) {
     const setVoiceCmd = vscode.commands.registerCommand(
         "vscode-animalese.setVoice",
         () => {
+            const oldVocalIndex = vocalIndex ?? 0;
             vscode.window
                 .showQuickPick(VOICE_LIST, {
                     title: "Set Voice",
-                    placeHolder: VOICE_LIST[1],
+                    placeHolder: VOICE_LIST[oldVocalIndex],
                 })
                 .then((v) => {
                     if (!v) return;
@@ -109,11 +110,12 @@ export function activate(context: vscode.ExtensionContext) {
     const setVolumeCmd = vscode.commands.registerCommand(
         "vscode-animalese.setVolume",
         () => {
+            const oldVolume = volume.toString ?? 50;
             vscode.window
                 .showInputBox({
                     title: "Set Volume",
                     prompt: "What would you like the volume % to be? The response should be an integer within 1-100.",
-                    placeHolder: "50",
+                    placeHolder: oldVolume.toString(),
                     validateInput: (str) => {
                         if (isNaN(parseInt(str))) {
                             return {
