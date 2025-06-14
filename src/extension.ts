@@ -218,6 +218,9 @@ export function activate(context: vscode.ExtensionContext) {
         source.connect(gainNode);
         gainNode.connect(audioContext.destination);
         source.start();
+        source.onended = (ev) => {
+            audioContext.close();
+        };
     });
 }
 
