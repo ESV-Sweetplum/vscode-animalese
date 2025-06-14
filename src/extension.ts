@@ -145,7 +145,6 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(setVolumeCmd);
     vscode.workspace.onDidChangeTextDocument(async (event) => {
         if (!extensionEnabled || !event.contentChanges.length) return;
-        const startTime = Date.now();
         let key = event.contentChanges[0].text.replaceAll("\r", "").slice(0, 1);
         if (/^( ){2,}$/.test(event.contentChanges[0].text)) {
             key = "tab";
