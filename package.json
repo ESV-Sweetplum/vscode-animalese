@@ -114,5 +114,6 @@
     },
     "dependencies": {
         "node-web-audio-api": "^1.0.4"
-    }
+    },
+    "repository": "https://github.com/ESV-Sweetplum/vscode-animalese"
 }
