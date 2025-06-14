@@ -2,7 +2,7 @@
     "name": "vscode-animalese",
     "displayName": "VSCode Animalese",
     "description": "Makes animal crossing sounds whenever you type. Highly customizable with very low latency.",
-    "version": "0.0.2",
+    "version": "0.1.0",
     "publisher": "AidanHsiao",
     "engines": {
         "vscode": "^1.101.0"
