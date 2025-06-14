@@ -228,62 +228,6 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
     if (event.contentChanges[0].rangeLength > 0) key = "backspace";
     let filePath = "";
     const cachedPath = PATH_CACHE.get(key);
-    if (cachedPath) {
-        filePath = cachedPath;
-    } else {
-        switch (true) {
-            case isAlphabetical(key.toLowerCase()): {
-                filePath = path.join(
-                    __dirname,
-                    `..\\audio\\animalese\\${
-                        vocalIndex <= 3 ? "female" : "male"
-                    }\\voice_${(vocalIndex % 4) + 1}\\${key}.mp3`
-                );
-                break;
-            }
-            case isHarmonic(key): {
-                filePath = path.join(
-                    __dirname,
-                    `..\\audio\\vocals\\${
-                        vocalIndex <= 3 ? "female" : "male"
-                    }\\voice_${
-                        (vocalIndex % 4) + 1
-                    }\\${HARMONIC_CHARACTERS.indexOf(key)}.mp3`
-                );
-                break;
-            }
-            case key === "!" || key === "?" || key.includes("\n"): {
-                if (specialPunctuation) {
-                    const noise = { "!": "Gwah", "?": "Deska", "\n": "OK" };
-                    filePath = path.join(
-                        __dirname,
-                        `..\\audio\\animalese\\${
-                            vocalIndex <= 3 ? "female" : "male"
-                        }\\voice_${(vocalIndex % 4) + 1}\\${
-                            noise[key as keyof typeof noise]
-                        }.mp3`
-                    );
-                    break;
-                }
-            }
-            case isSymbolic(key): {
-                filePath = path.join(
-                    __dirname,
-                    `..\\audio\\sfx\\${symbolToName(key) ?? "default"}.mp3`
-                );
-                break;
-            }
-            case ["tab", "backspace"].includes(key): {
-                filePath = path.join(__dirname, `..\\audio\\sfx\\${key}.mp3`);
-                break;
-            }
-            default: {
-                filePath = path.join(__dirname, `..\\audio\\sfx\\default.mp3`);
-                break;
-            }
-        }
-        PATH_CACHE.set(key, filePath);
-    }
 
     const audioContext = new AudioContext();
     let audioData: AudioBuffer;

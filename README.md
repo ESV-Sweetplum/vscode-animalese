@@ -2,7 +2,7 @@
 
 ![Typescript Image](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) ![Webpack Image](https://img.shields.io/badge/Webpack-8DD6F9?style=for-the-badge&logo=Webpack&logoColor=white)
 
-![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/AidanHsiao.vscode-animalese?style=plastic&color=%23e0d0b4) ![Visual Studio Marketplace Release Date](https://img.shields.io/visual-studio-marketplace/release-date/AidanHsiao.vscode-animalese) ![GitHub License](https://img.shields.io/github/license/esv-sweetplum/vscode-animalese) ![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/stars/AidanHsiao.vscode-animalese)
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/esv-sweetplum/vscode-animalese) ![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/AidanHsiao.vscode-animalese?style=plastic&color=%23e0d0b4) ![Visual Studio Marketplace Release Date](https://img.shields.io/visual-studio-marketplace/release-date/AidanHsiao.vscode-animalese) ![GitHub License](https://img.shields.io/github/license/esv-sweetplum/vscode-animalese) ![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/stars/AidanHsiao.vscode-animalese)
 
 <center><i><b> "Not Strictly Advisable From A Business Perspective, But Quite Generous. Yes yes!"  - Tom Nook</b></i></center>
 
