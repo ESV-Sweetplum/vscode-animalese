@@ -9,6 +9,7 @@ import {
     isMelodic,
     isSymbolic,
 } from "./isParticularType";
+import { getFilePath } from "./getFilePath";
 
 const VOICE_LIST = [
     "Female Voice 1 (Sweet)",
@@ -149,73 +150,10 @@ export function activate(context: vscode.ExtensionContext) {
         }
     );
     context.subscriptions.push(setVolumeCmd);
-    vscode.workspace.onDidChangeTextDocument(async (event) => {
+    vscode.workspace.onDidChangeTextDocument((event) => {
         if (!extensionEnabled || !event.contentChanges.length) return;
         handleKeyPress(event);
     });
-}
-
-export function symbolToName(sym: string) {
-    switch (sym) {
-        case "~": {
-            return "tilde";
-        }
-        case "!": {
-            return "exclamation";
-        }
-        case "@": {
-            return "at";
-        }
-        case "#": {
-            return "pound";
-        }
-        case "$": {
-            return "dollar";
-        }
-        case "%": {
-            return "percent";
-        }
-        case "^": {
-            return "caret";
-        }
-        case "&": {
-            return "ampersand";
-        }
-        case "*": {
-            return "asterisk";
-        }
-        case "(": {
-            return "parenthesis_open";
-        }
-        case ")": {
-            return "parenthesis_closed";
-        }
-        case "{": {
-            return "brace_open";
-        }
-        case "}": {
-            return "brace_closed";
-        }
-        case "[": {
-            return "bracket_open";
-        }
-        case "]": {
-            return "bracket_closed";
-        }
-        case "?": {
-            return "question";
-        }
-        case "\n": {
-            return "enter";
-        }
-        case "/": {
-            return "slash_forward";
-        }
-        case "\\": {
-            return "slash_back";
-        }
-    }
-    return null;
 }
 
 export function deactivate() {}
@@ -227,7 +165,15 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
     }
     if (event.contentChanges[0].rangeLength > 0) key = "backspace";
     let filePath = "";
-    const cachedPath = PATH_CACHE.get(key);
+    const cachedPath = PATH_CACHE.get(
+        `${key}${vocalIndex}${+specialPunctuation}`
+    );
+    if (cachedPath) {
+        filePath = cachedPath;
+    } else {
+        filePath = getFilePath(key, vocalIndex, specialPunctuation);
+        PATH_CACHE.set(`${key}${vocalIndex}${+specialPunctuation}`, filePath);
+    }
 
     const audioContext = new AudioContext();
     let audioData: AudioBuffer;
