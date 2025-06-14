@@ -17,7 +17,7 @@ const VOICE_LIST = [
 let extensionEnabled = true;
 let volume = 0.5;
 let vocalIndex = 0;
-let falloffTime = 0.3;
+let falloffTime = 0.5;
 let pitchVariation = 100;
 let specialPunctuation = false;
 
@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
     vocalIndex = VOICE_LIST.indexOf(
         config.get<string>("voice") ?? "Female Voice 1 (Sweet)"
     );
-    falloffTime = config.get<number>("intonation.falloffTime") ?? 0.3;
+    falloffTime = config.get<number>("intonation.falloffTime") ?? 0.5;
     pitchVariation = config.get<number>("intonation.pitchVariation") ?? 100;
     specialPunctuation = config.get<boolean>("specialPunctuation") ?? false;
 
@@ -43,7 +43,7 @@ export function activate(context: vscode.ExtensionContext) {
         );
         falloffTime =
             config.inspect<number>("intonation.falloffTime")?.globalValue ??
-            0.3;
+            0.5;
         pitchVariation =
             config.inspect<number>("intonation.pitchVariation")?.globalValue ??
             100;

@@ -3,6 +3,7 @@
     "displayName": "vscode-animalese",
     "description": "Makes animal crossing sounds whenever you type.",
     "version": "0.0.1",
+    "publisher": "AidanHsiao",
     "engines": {
         "vscode": "^1.101.0"
     },
@@ -72,7 +73,7 @@
                 },
                 "vscode-animalese.intonation.falloffTime": {
                     "type": "number",
-                    "default": "0.3",
+                    "default": "0.5",
                     "description": "When a key is pressed, the audio slowly fades out over the course of the track. This value determines how many seconds it takes before the audio fully fades out.",
                     "minimum": 0
                 },

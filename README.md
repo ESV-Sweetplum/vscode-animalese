@@ -1,71 +1,26 @@
-# vscode-animalese README
+# vscode-animalese
 
-This is the README for your extension "vscode-animalese". After writing up a brief description, we recommend including the following sections.
+<center><i><b> "Not Strictly Advisable From A Business Perspective, But Quite Generous. Yes yes!"  - Tom Nook</b></i></center>
 
-## Features
+### Write code with the whimsy of animal crossing style characters!
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+[`vscode-animalese`](https://marketplace.visualstudio.com/items?itemName=AidanHsiao.vscode-animalese) is a [Visual Studio Code](https://code.visualstudio.com/) extension that functions similarly to the chrome plugin [`Animalese Typing`](https://chromewebstore.google.com/detail/animalese-typing/djbgadolfboockbofalipohdncimebic?hl=en), made by [DageXVIII](https://github.com/joshxviii). Each time you type a character in a file, a corresponding animalese sound will play with nearly 0 delay. Not very practical; but certainly very fun!
 
-For example if there is an image subfolder under your extension project workspace:
+## Special Thanks To:
 
-\!\[feature X\]\(images/feature-x.png\)
+-   [DageXVIII](https://github.com/joshxviii/animalese-typing) for the original chrome extension; without it, none of this would have been possible.
+-   Mel for the introduction to animalese-style keysounds.
+-   [ircam-ismm](https://github.com/ircam-ismm) for the fantastic [`node-web-audio-api`](https://www.npmjs.com/package/node-web-audio-api) package, which served as a great low-latency alternative to the simpler albeit jankier [`sound-play`](https://www.npmjs.com/package/sound-play) package.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## More Detailed Configuration List
 
-## Requirements
+> ⚠️ **The execution of this plugin is very rudimentary, and has not been tested on any other platform besides Windows.** If there is a pressing issue to solve, please raise an issue within the [GitHub repository](https://github.com/ESV-Sweetplum/vscode-animalese).
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+-   `vscode-animalese.volume` (integer between 0-100): Controls the volume of the keysounds, where 100% is max volume.
+-   `vscode-animalese.voice` (selectable from 8 different voices): Customize the timbre of the keysounds with 8 different voice profiles (yoinked from [`animalese-typing`](https://www.npmjs.com/package/sound-play)).
+-   `vscode-animalese.specialPunctuation` (boolean): By default, `!`, `?` and `Enter` produce special sounds that represent the ends of sentences. To override this with a standard voice:
+    -   `?` -> `です？` or "desuka?"
+    -   `!` -> `グア~` or "gwah~"
+    -   `Enter` -> `おーけ` or "OK"
+-   `vscode-animalese.intonation.falloffTime` (positive number): Determines how many seconds it takes for the audio to fade out (although each keysound is not above a second regardless, so this value should be like 0.75 at most).
+-   `vscode-animalese.intonation.pitchVariation` (positive integer): Adjusts the strength of pitch variation between duplicate key pressed. If set to 0, all keypresses of the same key (such as pressing the `e` key 7 times) will sound identical.
