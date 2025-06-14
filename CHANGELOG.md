@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.0
+
+-   Cleans up previous audio contexts to eliminate static noise after too much usage.
+
 ## v0.0.2
 
 -   Made sure to actually include the `node-web-audio-api` package this time... so the extension doesn't immediately fucking crash
