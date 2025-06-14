@@ -30,6 +30,7 @@ let vocalIndex = 0;
 let falloffTime = 0.5;
 let pitchVariation = 100;
 let specialPunctuation = false;
+let switchToExponentialFalloff = false;
 
 export const enablingText = "Enabled Animalese Sounds. Type away!";
 export const disablingText = "Disabled Animalese Sounds.";
@@ -43,6 +44,8 @@ export function activate(context: vscode.ExtensionContext) {
     falloffTime = config.get<number>("intonation.falloffTime") ?? 0.5;
     pitchVariation = config.get<number>("intonation.pitchVariation") ?? 100;
     specialPunctuation = config.get<boolean>("specialPunctuation") ?? false;
+    switchToExponentialFalloff =
+        config.get<boolean>("intonation.switchToExponentialFalloff") ?? false;
 
     vscode.workspace.onDidChangeConfiguration((event) => {
         if (!event.affectsConfiguration("vscode-animalese")) return;
@@ -59,6 +62,9 @@ export function activate(context: vscode.ExtensionContext) {
             100;
         specialPunctuation =
             config.inspect<boolean>("specialPunctuation")?.globalValue ?? false;
+        switchToExponentialFalloff =
+            config.inspect<boolean>("intonation.switchToExponentialFalloff")
+                ?.globalValue ?? false;
     });
 
     const toggleCmd = vscode.commands.registerCommand(
@@ -237,10 +243,17 @@ export function activate(context: vscode.ExtensionContext) {
             : Math.random() * pitchVariation * 2 - pitchVariation;
         const gainNode = audioContext.createGain();
         gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
-        gainNode.gain.linearRampToValueAtTime(
-            0,
-            audioContext.currentTime + falloffTime
-        );
+        if (switchToExponentialFalloff) {
+            gainNode.gain.exponentialRampToValueAtTime(
+                0,
+                audioContext.currentTime + falloffTime
+            );
+        } else {
+            gainNode.gain.linearRampToValueAtTime(
+                0,
+                audioContext.currentTime + falloffTime
+            );
+        }
         source.connect(gainNode);
         gainNode.connect(audioContext.destination);
         source.start();
