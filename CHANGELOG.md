@@ -1,8 +1,16 @@
 # Changelog
 
+## v0.1.2
+
+-   Added even more metadata to the marketplace
+
+## v0.1.1
+
+-   Added more metadata to the marketplace
+
 ## v0.1.0
 
--   Cleans up previous audio contexts to eliminate static noise after too much usage.
+-   Now cleans up previous audio contexts to eliminate static noise after too much usage.
 
 ## v0.0.2
 

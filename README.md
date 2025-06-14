@@ -6,7 +6,7 @@
 
 <center><i><b> "Not Strictly Advisable From A Business Perspective, But Quite Generous. Yes yes!"  - Tom Nook</b></i></center>
 
-### Write code with the whimsy of animal crossing style characters!
+### Write code with the whimsical style of "Animal Crossing"-esque characters!
 
 [`vscode-animalese`](https://marketplace.visualstudio.com/items?itemName=AidanHsiao.vscode-animalese) is a [Visual Studio Code](https://code.visualstudio.com/) extension that functions similarly to the chrome plugin [`Animalese Typing`](https://chromewebstore.google.com/detail/animalese-typing/djbgadolfboockbofalipohdncimebic?hl=en), made by [DageXVIII](https://github.com/joshxviii). Each time you type a character in a file, a corresponding animalese sound will play with nearly 0 delay. Not very practical; but certainly very fun!
 
