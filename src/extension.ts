@@ -151,115 +151,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(setVolumeCmd);
     vscode.workspace.onDidChangeTextDocument(async (event) => {
         if (!extensionEnabled || !event.contentChanges.length) return;
-        let key = event.contentChanges[0].text.replaceAll("\r", "").slice(0, 1);
-        if (/^( ){2,}$/.test(event.contentChanges[0].text)) {
-            key = "tab";
-        }
-        if (event.contentChanges[0].rangeLength > 0) key = "backspace";
-        let filePath = "";
-        const cachedPath = PATH_CACHE.get(key);
-        if (cachedPath) {
-            filePath = cachedPath;
-        } else {
-            switch (true) {
-                case isAlphabetical(key.toLowerCase()): {
-                    filePath = path.join(
-                        __dirname,
-                        `..\\audio\\animalese\\${
-                            vocalIndex <= 3 ? "female" : "male"
-                        }\\voice_${(vocalIndex % 4) + 1}\\${key}.mp3`
-                    );
-                    break;
-                }
-                case isHarmonic(key): {
-                    filePath = path.join(
-                        __dirname,
-                        `..\\audio\\vocals\\${
-                            vocalIndex <= 3 ? "female" : "male"
-                        }\\voice_${
-                            (vocalIndex % 4) + 1
-                        }\\${HARMONIC_CHARACTERS.indexOf(key)}.mp3`
-                    );
-                    break;
-                }
-                case key === "!" || key === "?" || key.includes("\n"): {
-                    if (specialPunctuation) {
-                        const noise = { "!": "Gwah", "?": "Deska", "\n": "OK" };
-                        filePath = path.join(
-                            __dirname,
-                            `..\\audio\\animalese\\${
-                                vocalIndex <= 3 ? "female" : "male"
-                            }\\voice_${(vocalIndex % 4) + 1}\\${
-                                noise[key as keyof typeof noise]
-                            }.mp3`
-                        );
-                        break;
-                    }
-                }
-                case isSymbolic(key): {
-                    filePath = path.join(
-                        __dirname,
-                        `..\\audio\\sfx\\${symbolToName(key) ?? "default"}.mp3`
-                    );
-                    break;
-                }
-                case ["tab", "backspace"].includes(key): {
-                    filePath = path.join(
-                        __dirname,
-                        `..\\audio\\sfx\\${key}.mp3`
-                    );
-                    break;
-                }
-                default: {
-                    filePath = path.join(
-                        __dirname,
-                        `..\\audio\\sfx\\default.mp3`
-                    );
-                    break;
-                }
-            }
-            PATH_CACHE.set(key, filePath);
-        }
-
-        const audioContext = new AudioContext();
-        let audioData: AudioBuffer;
-        let cachedBuffer = BUFFER_CACHE.get(filePath);
-        if (cachedBuffer) {
-            audioData = cachedBuffer;
-        } else {
-            const initialBuffer = fs.readFileSync(filePath);
-            const audioBuffer = initialBuffer.buffer.slice(
-                initialBuffer.byteOffset,
-                initialBuffer.byteOffset + initialBuffer.byteLength
-            );
-            audioData = await audioContext.decodeAudioData(audioBuffer);
-            BUFFER_CACHE.set(filePath, audioData);
-        }
-
-        const source = audioContext.createBufferSource();
-        source.buffer = audioData;
-        source.detune.value = isMelodic(key)
-            ? 0
-            : Math.random() * pitchVariation * 2 - pitchVariation;
-        const gainNode = audioContext.createGain();
-        gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
-        if (switchToExponentialFalloff) {
-            gainNode.gain.exponentialRampToValueAtTime(
-                0,
-                audioContext.currentTime + falloffTime
-            );
-        } else {
-            gainNode.gain.linearRampToValueAtTime(
-                0,
-                audioContext.currentTime + falloffTime
-            );
-        }
-        source.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        source.start();
-        source.onended = (ev) => {
-            audioContext.close();
-        };
+        handleKeyPress(event);
     });
 }
 
@@ -327,3 +219,109 @@ export function symbolToName(sym: string) {
 }
 
 export function deactivate() {}
+
+export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
+    let key = event.contentChanges[0].text.replaceAll("\r", "").slice(0, 1);
+    if (/^( ){2,}$/.test(event.contentChanges[0].text)) {
+        key = "tab";
+    }
+    if (event.contentChanges[0].rangeLength > 0) key = "backspace";
+    let filePath = "";
+    const cachedPath = PATH_CACHE.get(key);
+    if (cachedPath) {
+        filePath = cachedPath;
+    } else {
+        switch (true) {
+            case isAlphabetical(key.toLowerCase()): {
+                filePath = path.join(
+                    __dirname,
+                    `..\\audio\\animalese\\${
+                        vocalIndex <= 3 ? "female" : "male"
+                    }\\voice_${(vocalIndex % 4) + 1}\\${key}.mp3`
+                );
+                break;
+            }
+            case isHarmonic(key): {
+                filePath = path.join(
+                    __dirname,
+                    `..\\audio\\vocals\\${
+                        vocalIndex <= 3 ? "female" : "male"
+                    }\\voice_${
+                        (vocalIndex % 4) + 1
+                    }\\${HARMONIC_CHARACTERS.indexOf(key)}.mp3`
+                );
+                break;
+            }
+            case key === "!" || key === "?" || key.includes("\n"): {
+                if (specialPunctuation) {
+                    const noise = { "!": "Gwah", "?": "Deska", "\n": "OK" };
+                    filePath = path.join(
+                        __dirname,
+                        `..\\audio\\animalese\\${
+                            vocalIndex <= 3 ? "female" : "male"
+                        }\\voice_${(vocalIndex % 4) + 1}\\${
+                            noise[key as keyof typeof noise]
+                        }.mp3`
+                    );
+                    break;
+                }
+            }
+            case isSymbolic(key): {
+                filePath = path.join(
+                    __dirname,
+                    `..\\audio\\sfx\\${symbolToName(key) ?? "default"}.mp3`
+                );
+                break;
+            }
+            case ["tab", "backspace"].includes(key): {
+                filePath = path.join(__dirname, `..\\audio\\sfx\\${key}.mp3`);
+                break;
+            }
+            default: {
+                filePath = path.join(__dirname, `..\\audio\\sfx\\default.mp3`);
+                break;
+            }
+        }
+        PATH_CACHE.set(key, filePath);
+    }
+
+    const audioContext = new AudioContext();
+    let audioData: AudioBuffer;
+    let cachedBuffer = BUFFER_CACHE.get(filePath);
+    if (cachedBuffer) {
+        audioData = cachedBuffer;
+    } else {
+        const initialBuffer = fs.readFileSync(filePath);
+        const audioBuffer = initialBuffer.buffer.slice(
+            initialBuffer.byteOffset,
+            initialBuffer.byteOffset + initialBuffer.byteLength
+        );
+        audioData = await audioContext.decodeAudioData(audioBuffer);
+        BUFFER_CACHE.set(filePath, audioData);
+    }
+
+    const source = audioContext.createBufferSource();
+    source.buffer = audioData;
+    source.detune.value = isMelodic(key)
+        ? 0
+        : Math.random() * pitchVariation * 2 - pitchVariation;
+    const gainNode = audioContext.createGain();
+    gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+    if (switchToExponentialFalloff) {
+        gainNode.gain.exponentialRampToValueAtTime(
+            0,
+            audioContext.currentTime + falloffTime
+        );
+    } else {
+        gainNode.gain.linearRampToValueAtTime(
+            0,
+            audioContext.currentTime + falloffTime
+        );
+    }
+    source.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    source.start();
+    source.onended = (_) => {
+        audioContext.close();
+    };
+}
