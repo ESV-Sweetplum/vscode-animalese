@@ -1,9 +1,7 @@
-# Change Log
+# Changelog
 
-All notable changes to the "vscode-animalese" extension will be documented in this file.
+## v0.0.1
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+-   Made the extension in 12 hours
+-   Added support for all alphanumeric keys and most standard special characters found on a 60% keyboard.
+-   Added rudimentary settings so you don't get your ears blasted.
