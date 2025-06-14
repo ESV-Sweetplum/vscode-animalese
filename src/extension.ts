@@ -2,6 +2,13 @@ import * as vscode from "vscode";
 import * as path from "path";
 import * as fs from "fs";
 import { AudioContext } from "node-web-audio-api";
+import {
+    HARMONIC_CHARACTERS,
+    isAlphabetical,
+    isHarmonic,
+    isMelodic,
+    isSymbolic,
+} from "./isParticularType";
 
 const VOICE_LIST = [
     "Female Voice 1 (Sweet)",
@@ -13,6 +20,9 @@ const VOICE_LIST = [
     "Male Voice 3 (Smug)",
     "Male Voice 4 (Cranky)",
 ];
+
+const PATH_CACHE: Map<string, string> = new Map();
+const BUFFER_CACHE: Map<string, AudioBuffer> = new Map();
 
 let extensionEnabled = true;
 let volume = 0.5;
@@ -135,78 +145,95 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(setVolumeCmd);
     vscode.workspace.onDidChangeTextDocument(async (event) => {
         if (!extensionEnabled || !event.contentChanges.length) return;
+        const startTime = Date.now();
         let key = event.contentChanges[0].text.replaceAll("\r", "").slice(0, 1);
         if (/^( ){2,}$/.test(event.contentChanges[0].text)) {
             key = "tab";
         }
         if (event.contentChanges[0].rangeLength > 0) key = "backspace";
         let filePath = "";
-        switch (true) {
-            case "abcdefghijklmnopqrstuvwxyz"
-                .split("")
-                .includes(key.toLowerCase()): {
-                filePath = path.join(
-                    __dirname,
-                    `..\\audio\\animalese\\${
-                        vocalIndex <= 3 ? "female" : "male"
-                    }\\voice_${(vocalIndex % 4) + 1}\\${key}.mp3`
-                );
-                break;
-            }
-            case "1234567890-=".split("").includes(key): {
-                filePath = path.join(
-                    __dirname,
-                    `..\\audio\\vocals\\${
-                        vocalIndex <= 3 ? "female" : "male"
-                    }\\voice_${(vocalIndex % 4) + 1}\\${"1234567890-="
-                        .split("")
-                        .indexOf(key)}.mp3`
-                );
-                break;
-            }
-            case key === "!" || key === "?" || key.includes("\n"): {
-                if (specialPunctuation) {
-                    const noise = { "!": "Gwah", "?": "Deska", "\n": "OK" };
+        const cachedPath = PATH_CACHE.get(key);
+        if (cachedPath) {
+            filePath = cachedPath;
+        } else {
+            switch (true) {
+                case isAlphabetical(key.toLowerCase()): {
                     filePath = path.join(
                         __dirname,
                         `..\\audio\\animalese\\${
                             vocalIndex <= 3 ? "female" : "male"
-                        }\\voice_${(vocalIndex % 4) + 1}\\${
-                            noise[key as keyof typeof noise]
-                        }.mp3`
+                        }\\voice_${(vocalIndex % 4) + 1}\\${key}.mp3`
+                    );
+                    break;
+                }
+                case isHarmonic(key): {
+                    filePath = path.join(
+                        __dirname,
+                        `..\\audio\\vocals\\${
+                            vocalIndex <= 3 ? "female" : "male"
+                        }\\voice_${
+                            (vocalIndex % 4) + 1
+                        }\\${HARMONIC_CHARACTERS.indexOf(key)}.mp3`
+                    );
+                    break;
+                }
+                case key === "!" || key === "?" || key.includes("\n"): {
+                    if (specialPunctuation) {
+                        const noise = { "!": "Gwah", "?": "Deska", "\n": "OK" };
+                        filePath = path.join(
+                            __dirname,
+                            `..\\audio\\animalese\\${
+                                vocalIndex <= 3 ? "female" : "male"
+                            }\\voice_${(vocalIndex % 4) + 1}\\${
+                                noise[key as keyof typeof noise]
+                            }.mp3`
+                        );
+                        break;
+                    }
+                }
+                case isSymbolic(key): {
+                    filePath = path.join(
+                        __dirname,
+                        `..\\audio\\sfx\\${symbolToName(key) ?? "default"}.mp3`
+                    );
+                    break;
+                }
+                case ["tab", "backspace"].includes(key): {
+                    filePath = path.join(
+                        __dirname,
+                        `..\\audio\\sfx\\${key}.mp3`
+                    );
+                    break;
+                }
+                default: {
+                    filePath = path.join(
+                        __dirname,
+                        `..\\audio\\sfx\\default.mp3`
                     );
                     break;
                 }
             }
-            case "~@#$%^&*(){}[]/\\".split("").includes(key): {
-                filePath = path.join(
-                    __dirname,
-                    `..\\audio\\sfx\\${symbolToName(key) ?? "default"}.mp3`
-                );
-                break;
-            }
-            case ["tab", "backspace"].includes(key): {
-                filePath = path.join(__dirname, `..\\audio\\sfx\\${key}.mp3`);
-                break;
-            }
-            default: {
-                filePath = path.join(__dirname, `..\\audio\\sfx\\default.mp3`);
-                break;
-            }
+            PATH_CACHE.set(key, filePath);
         }
 
         const audioContext = new AudioContext();
+        let audioData: AudioBuffer;
+        let cachedBuffer = BUFFER_CACHE.get(filePath);
+        if (cachedBuffer) {
+            audioData = cachedBuffer;
+        } else {
+            const initialBuffer = fs.readFileSync(filePath);
+            const audioBuffer = initialBuffer.buffer.slice(
+                initialBuffer.byteOffset,
+                initialBuffer.byteOffset + initialBuffer.byteLength
+            );
+            audioData = await audioContext.decodeAudioData(audioBuffer);
+            BUFFER_CACHE.set(filePath, audioData);
+        }
 
-        const initialBuffer = fs.readFileSync(filePath);
-        const audioBuffer = initialBuffer.buffer.slice(
-            initialBuffer.byteOffset,
-            initialBuffer.byteOffset + initialBuffer.byteLength
-        );
-
-        const audioData = await audioContext.decodeAudioData(audioBuffer);
         const source = audioContext.createBufferSource();
         source.buffer = audioData;
-        source.detune.value = "1234567890-=!?".split("").includes(key)
+        source.detune.value = isMelodic(key)
             ? 0
             : Math.random() * pitchVariation * 2 - pitchVariation;
         const gainNode = audioContext.createGain();
