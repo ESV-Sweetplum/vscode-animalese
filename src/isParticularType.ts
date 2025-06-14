@@ -47,3 +47,8 @@ export function isSymbolic(char: string | number): boolean {
     if (typeof char === "number") return false;
     return SYMBOLS.includes(char);
 }
+
+export function isNumeric(char: string | number): boolean {
+    if (typeof char === "string") return false;
+    return /[0-9]/.test(char.toString());
+}

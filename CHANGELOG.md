@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.3
+
+-   Decreased sound latency by 15% using caches
+
 ## v0.1.2
 
 -   Added even more metadata to the marketplace
