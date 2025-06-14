@@ -116,7 +116,7 @@
         "node-web-audio-api": "^1.0.4"
     },
     "galleryBanner": {
-        "color": "#FFF9EF",
+        "color": "#e0d0b4",
         "theme": "dark"
     },
     "repository": {

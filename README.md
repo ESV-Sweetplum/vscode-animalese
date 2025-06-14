@@ -1,5 +1,9 @@
 # vscode-animalese
 
+![Typescript Image](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) ![Webpack Image](https://img.shields.io/badge/Webpack-8DD6F9?style=for-the-badge&logo=Webpack&logoColor=white)
+
+![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/AidanHsiao.vscode-animalese?style=plastic&color=%23e0d0b4) ![Visual Studio Marketplace Release Date](https://img.shields.io/visual-studio-marketplace/release-date/AidanHsiao.vscode-animalese) ![GitHub License](https://img.shields.io/github/license/esv-sweetplum/vscode-animalese) ![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/stars/AidanHsiao.vscode-animalese)
+
 <center><i><b> "Not Strictly Advisable From A Business Perspective, But Quite Generous. Yes yes!"  - Tom Nook</b></i></center>
 
 ### Write code with the whimsy of animal crossing style characters!
@@ -11,6 +15,13 @@
 -   [DageXVIII](https://github.com/joshxviii/animalese-typing) for the original chrome extension; without it, none of this would have been possible.
 -   Mel for the introduction to animalese-style keysounds.
 -   [ircam-ismm](https://github.com/ircam-ismm) for the fantastic [`node-web-audio-api`](https://www.npmjs.com/package/node-web-audio-api) package, which served as a great low-latency alternative to the simpler albeit jankier [`sound-play`](https://www.npmjs.com/package/sound-play) package.
+
+## Command List
+
+> **All commands are prefaced with the namespace `vscode-animalese:`.**
+
+-   `Enable/Disable/Toggle Animalese Sounds`: Self-explanatory.
+-   `Set Animalese Volume/Voice`: Self-explanatory
 
 ## More Detailed Configuration List
 
