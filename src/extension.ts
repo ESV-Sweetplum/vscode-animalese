@@ -110,7 +110,7 @@ export function activate(context: vscode.ExtensionContext) {
     const setVolumeCmd = vscode.commands.registerCommand(
         "vscode-animalese.setVolume",
         () => {
-            const oldVolume = volume.toString ?? 50;
+            const oldVolume = volume ?? 50;
             vscode.window
                 .showInputBox({
                     title: "Set Volume",
