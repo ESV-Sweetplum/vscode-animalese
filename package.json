@@ -124,5 +124,17 @@
         "url": "https://github.com/ESV-Sweetplum/vscode-animalese.git"
     },
     "homepage": "https://github.com/ESV-Sweetplum/vscode-animalese/blob/main/README.md",
-    "license": "https://github.com/ESV-Sweetplum/vscode-animalese/blob/main/LICENSE"
+    "license": "https://github.com/ESV-Sweetplum/vscode-animalese/blob/main/LICENSE",
+    "keywords": [
+        "Animalese",
+        "Animal Crossing",
+        "Tom Nook",
+        "Isabelle",
+        "Typing Sound",
+        "Sound",
+        "Audio",
+        "Keypress Audio",
+        "Keypress Sounds",
+        "Typing Sounds"
+    ]
 }
