@@ -29,7 +29,7 @@
 
 -   `vscode-animalese.volume` (integer between 0-100): Controls the volume of the keysounds, where 100% is max volume.
 -   `vscode-animalese.voice` (selectable from 8 different voices): Customize the timbre of the keysounds with 8 different voice profiles (yoinked from [`animalese-typing`](https://www.npmjs.com/package/sound-play)).
--   `vscode-animalese.specialPunctuation` (boolean): By default, `!`, `?` and `Enter` produce special sounds that represent the ends of sentences. To override this with a standard voice:
+-   `vscode-animalese.specialPunctuation` (boolean): By default, `!`, `?` and `Enter` produce special sounds that represent the ends of sentences. To override this with a standard voice, set this setting to `true`. This will result in the following characters-to-sounds map:
     -   `?` -> `です？` or "desuka?"
     -   `!` -> `グア~` or "gwah~"
     -   `Enter` -> `おーけ` or "OK"
