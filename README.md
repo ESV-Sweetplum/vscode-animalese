@@ -12,7 +12,7 @@
 
 ## Special Thanks To:
 
--   [DageXVIII](https://github.com/joshxviii/animalese-typing) for the original chrome extension; without it, none of this would have been possible.
+-   [DageXVIII](https://github.com/joshxviii/animalese-typing) for the original chrome extension and audio assets; without them, none of this would have been possible.
 -   Mel for the introduction to animalese-style keysounds.
 -   [ircam-ismm](https://github.com/ircam-ismm) for the fantastic [`node-web-audio-api`](https://www.npmjs.com/package/node-web-audio-api) package, which served as a great low-latency alternative to the simpler albeit jankier [`sound-play`](https://www.npmjs.com/package/sound-play) package.
 
