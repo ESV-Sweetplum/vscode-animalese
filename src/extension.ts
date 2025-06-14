@@ -1,14 +1,7 @@
 import * as vscode from "vscode";
-import * as path from "path";
 import * as fs from "fs";
 import { AudioContext } from "node-web-audio-api";
-import {
-    HARMONIC_CHARACTERS,
-    isAlphabetical,
-    isHarmonic,
-    isMelodic,
-    isSymbolic,
-} from "./isParticularType";
+import { isMelodic } from "./isParticularType";
 import { getFilePath } from "./getFilePath";
 
 const VOICE_LIST = [
