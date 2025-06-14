@@ -115,5 +115,14 @@
     "dependencies": {
         "node-web-audio-api": "^1.0.4"
     },
-    "repository": "https://github.com/ESV-Sweetplum/vscode-animalese"
+    "galleryBanner": {
+        "color": "#FFF9EF",
+        "theme": "dark"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ESV-Sweetplum/vscode-animalese.git"
+    },
+    "homepage": "https://github.com/ESV-Sweetplum/vscode-animalese/blob/main/README.md",
+    "license": "https://github.com/ESV-Sweetplum/vscode-animalese/blob/main/LICENSE"
 }
