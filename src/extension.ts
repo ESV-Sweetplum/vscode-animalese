@@ -25,6 +25,7 @@ let falloffTime = 0.5;
 let pitchVariation = 100;
 let specialPunctuation = false;
 let switchToExponentialFalloff = false;
+let uppercasePercentage = 20;
 
 export const enablingText = "Enabled Animalese Sounds. Type away!";
 export const disablingText = "Disabled Animalese Sounds.";
@@ -40,6 +41,8 @@ export function activate(context: vscode.ExtensionContext) {
     specialPunctuation = config.get<boolean>("specialPunctuation") ?? false;
     switchToExponentialFalloff =
         config.get<boolean>("intonation.switchToExponentialFalloff") ?? false;
+    uppercasePercentage =
+        config.get<number>("intonation.louderUppercase") ?? 20;
 
     vscode.workspace.onDidChangeConfiguration((event) => {
         if (!event.affectsConfiguration("vscode-animalese")) return;
@@ -59,6 +62,9 @@ export function activate(context: vscode.ExtensionContext) {
         switchToExponentialFalloff =
             config.inspect<boolean>("intonation.switchToExponentialFalloff")
                 ?.globalValue ?? false;
+        uppercasePercentage =
+            config.inspect<number>("intonation.louderUppercase")?.globalValue ??
+            20;
     });
 
     const toggleCmd = vscode.commands.registerCommand(
@@ -191,7 +197,15 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
         ? 0
         : Math.random() * pitchVariation * 2 - pitchVariation;
     const gainNode = audioContext.createGain();
-    gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+
+    let audioVolume = volume;
+    if (uppercasePercentage > 0 && /^[A-Z]$/.test(key)) {
+        audioVolume = audioVolume * (1 + uppercasePercentage / 100);
+        source.detune.value =
+            1.5 * pitchVariation * (1 + uppercasePercentage / 100);
+    }
+
+    gainNode.gain.setValueAtTime(audioVolume, audioContext.currentTime);
     if (switchToExponentialFalloff) {
         gainNode.gain.exponentialRampToValueAtTime(
             0,
