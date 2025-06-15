@@ -3,7 +3,7 @@ import * as fs from "fs";
 import { AudioContext } from "node-web-audio-api";
 import { isMelodic } from "./isParticularType";
 import { getFilePath } from "./getFilePath";
-import { getConfig } from "./configState";
+import { getConfig, setConfig } from "./configState";
 import { DEFAULT_SETTINGS, settings } from "./settings";
 
 const VOICE_LIST = [
@@ -26,7 +26,6 @@ export const disablingText = "Disabled Animalese Sounds.";
 let extensionEnabled = true;
 
 export function activate(context: vscode.ExtensionContext) {
-    const config = vscode.workspace.getConfiguration("vscode-animalese");
     (Object.keys(settings) as Array<keyof typeof settings>).forEach(
         (key: keyof typeof settings) => {
             (settings as any)[key] =
@@ -84,8 +83,7 @@ export function activate(context: vscode.ExtensionContext) {
                     vscode.window.showInformationMessage(
                         `Successfully set voice to ${v}.`
                     );
-                    settings.voice = v;
-                    config.update("voice", settings.voice);
+                    setConfig("voice", v);
                 });
         }
     );
@@ -122,8 +120,7 @@ export function activate(context: vscode.ExtensionContext) {
                     vscode.window.showInformationMessage(
                         `Successfully set volume to ${percentage}%.`
                     );
-                    settings.volume = percentage;
-                    config.update("volume", percentage);
+                    setConfig("volume", percentage);
                 });
         }
     );
