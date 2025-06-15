@@ -1,4 +1,4 @@
-import path from "path";
+import { join } from "path";
 import {
     HARMONIC_CHARACTERS,
     isAlphabetical,
@@ -15,7 +15,7 @@ export function getFilePath(
 
     switch (true) {
         case isAlphabetical(key.toLowerCase()): {
-            filePath = path.join(
+            filePath = join(
                 __dirname,
                 `..\\audio\\animalese\\${
                     vocalIndex <= 3 ? "female" : "male"
@@ -24,7 +24,7 @@ export function getFilePath(
             break;
         }
         case isHarmonic(key): {
-            filePath = path.join(
+            filePath = join(
                 __dirname,
                 `..\\audio\\vocals\\${
                     vocalIndex <= 3 ? "female" : "male"
@@ -37,7 +37,7 @@ export function getFilePath(
         case key === "!" || key === "?" || key.includes("\n"): {
             if (specialPunctuation) {
                 const noise = { "!": "Gwah", "?": "Deska", "\n": "OK" };
-                filePath = path.join(
+                filePath = join(
                     __dirname,
                     `..\\audio\\animalese\\${
                         vocalIndex <= 3 ? "female" : "male"
@@ -49,18 +49,18 @@ export function getFilePath(
             }
         }
         case isSymbolic(key): {
-            filePath = path.join(
+            filePath = join(
                 __dirname,
                 `..\\audio\\sfx\\${symbolToName(key) ?? "default"}.mp3`
             );
             break;
         }
         case ["tab", "backspace"].includes(key): {
-            filePath = path.join(__dirname, `..\\audio\\sfx\\${key}.mp3`);
+            filePath = join(__dirname, `..\\audio\\sfx\\${key}.mp3`);
             break;
         }
         default: {
-            filePath = path.join(__dirname, `..\\audio\\sfx\\default.mp3`);
+            filePath = join(__dirname, `..\\audio\\sfx\\default.mp3`);
             break;
         }
     }
