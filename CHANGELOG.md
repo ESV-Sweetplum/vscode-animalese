@@ -1,8 +1,10 @@
 # Changelog
 
-## v0.1.3
+## v0.2.0
 
 -   Decreased sound latency by 15% using caches
+-   Complete backend overhaul to reduce complexity of files
+-   New exponential falloff setting to more sharply decrease amplitude of audio over time
 
 ## v0.1.2
 
