@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { settings } from "./settings";
+import { settings } from "./pluginSettings";
 
 export function getConfig<T>(
     key: string,

@@ -10,5 +10,5 @@
 	},
 	// Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off",
-    "vscode-animalese.voice": "Male Voice 2 (Lazy)"
+    "vscode-animalese.voice": "Female Voice 3 (Big Sister)"
 }

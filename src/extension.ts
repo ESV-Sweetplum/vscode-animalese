@@ -3,128 +3,40 @@ import * as fs from "fs";
 import { AudioContext } from "node-web-audio-api";
 import { isMelodic } from "./isParticularType";
 import { getFilePath } from "./getFilePath";
-import { getConfig, setConfig } from "./configState";
-import { DEFAULT_SETTINGS, settings } from "./settings";
-
-const VOICE_LIST = [
-    "Female Voice 1 (Sweet)",
-    "Female Voice 2 (Peppy)",
-    "Female Voice 3 (Big Sister)",
-    "Female Voice 4 (Snooty)",
-    "Male Voice 1 (Jock)",
-    "Male Voice 2 (Lazy)",
-    "Male Voice 3 (Smug)",
-    "Male Voice 4 (Cranky)",
-];
+import { settings } from "./settings/pluginSettings";
+import { loadSettings } from "./settings/loadSettings";
+import { getToggleCommand } from "./commands/toggle";
+import { getEnableCommand } from "./commands/enable";
+import { getDisableCommand } from "./commands/disable";
+import { getSetVoiceCommand } from "./commands/setVoice";
+import { getSetVolumeCommand } from "./commands/setVolume";
+import { VOICE_LIST } from "./constants/voiceList";
 
 const PATH_CACHE: Map<string, string> = new Map();
 const BUFFER_CACHE: Map<string, AudioBuffer> = new Map();
 
-export const enablingText = "Enabled Animalese Sounds. Type away!";
-export const disablingText = "Disabled Animalese Sounds.";
+export let extensionEnabled = true;
 
-let extensionEnabled = true;
+export const setExtensionEnabled = (val: boolean) => (extensionEnabled = val);
 
 export function activate(context: vscode.ExtensionContext) {
-    (Object.keys(settings) as Array<keyof typeof settings>).forEach(
-        (key: keyof typeof settings) => {
-            (settings as any)[key] =
-                getConfig(key, DEFAULT_SETTINGS[key]) ?? false;
-        }
-    );
+    loadSettings(true);
 
     vscode.workspace.onDidChangeConfiguration((event) => {
         if (!event.affectsConfiguration("vscode-animalese")) return;
-        (Object.keys(settings) as Array<keyof typeof settings>).forEach(
-            (key: keyof typeof settings) => {
-                (settings as any)[key] =
-                    getConfig(key, DEFAULT_SETTINGS[key], true) ?? false;
-            }
-        );
+        loadSettings(false);
     });
 
-    const toggleCmd = vscode.commands.registerCommand(
-        "vscode-animalese.toggle",
-        () => {
-            extensionEnabled = !extensionEnabled;
-            vscode.window.showInformationMessage(
-                extensionEnabled ? enablingText : disablingText
-            );
-        }
-    );
-    context.subscriptions.push(toggleCmd);
-    const disableCmd = vscode.commands.registerCommand(
-        "vscode-animalese.disable",
-        () => {
-            extensionEnabled = false;
-            vscode.window.showInformationMessage(disablingText);
-        }
-    );
-    context.subscriptions.push(disableCmd);
-    const enableCmd = vscode.commands.registerCommand(
-        "vscode-animalese.enable",
-        () => {
-            extensionEnabled = true;
-            vscode.window.showInformationMessage(enablingText);
-        }
-    );
-    context.subscriptions.push(enableCmd);
-    const setVoiceCmd = vscode.commands.registerCommand(
-        "vscode-animalese.setVoice",
-        () => {
-            const oldVoice = settings.voice ?? "Female Voice 1 (Sweet)";
-            vscode.window
-                .showQuickPick(VOICE_LIST, {
-                    title: "Set Voice",
-                    placeHolder: oldVoice,
-                })
-                .then((v) => {
-                    if (!v) return;
-                    vscode.window.showInformationMessage(
-                        `Successfully set voice to ${v}.`
-                    );
-                    setConfig("voice", v);
-                });
-        }
-    );
-    context.subscriptions.push(setVoiceCmd);
-    const setVolumeCmd = vscode.commands.registerCommand(
-        "vscode-animalese.setVolume",
-        () => {
-            const oldVolume = settings.volume ?? 50;
-            vscode.window
-                .showInputBox({
-                    title: "Set Volume",
-                    prompt: "What would you like the volume % to be? The response should be an integer within 1-100.",
-                    placeHolder: oldVolume.toString(),
-                    validateInput: (str) => {
-                        if (isNaN(parseInt(str))) {
-                            return {
-                                message: "The input provided is not a number.",
-                                severity: 3,
-                            };
-                        }
-                        if (!Number.isInteger(parseFloat(str))) {
-                            return {
-                                message:
-                                    "The input provided should be an integer.",
-                                severity: 2,
-                            };
-                        }
-                        return "";
-                    },
-                })
-                .then((v) => {
-                    if (!v) return;
-                    const percentage = parseInt(v);
-                    vscode.window.showInformationMessage(
-                        `Successfully set volume to ${percentage}%.`
-                    );
-                    setConfig("volume", percentage);
-                });
-        }
-    );
-    context.subscriptions.push(setVolumeCmd);
+    const commands = [
+        getToggleCommand(),
+        getEnableCommand(),
+        getDisableCommand(),
+        getSetVoiceCommand(),
+        getSetVolumeCommand(),
+    ];
+
+    context.subscriptions.push(...commands);
+
     vscode.workspace.onDidChangeTextDocument((event) => {
         if (!extensionEnabled || !event.contentChanges.length) return;
 
