@@ -19,5 +19,5 @@ export function setConfig(key: keyof typeof settings, value: any) {
     const config = vscode.workspace.getConfiguration("vscode-animalese");
 
     (settings as any)[key] = value;
-    config.update(key.replaceAll("_", "."), value);
+    config.update(key.replaceAll("_", "."), value, true);
 }
