@@ -3,6 +3,8 @@ import * as fs from "fs";
 import { AudioContext } from "node-web-audio-api";
 import { isMelodic } from "./isParticularType";
 import { getFilePath } from "./getFilePath";
+import { getConfig } from "./configState";
+import { DEFAULT_SETTINGS, settings } from "./settings";
 
 const VOICE_LIST = [
     "Female Voice 1 (Sweet)",
@@ -18,53 +20,28 @@ const VOICE_LIST = [
 const PATH_CACHE: Map<string, string> = new Map();
 const BUFFER_CACHE: Map<string, AudioBuffer> = new Map();
 
-let extensionEnabled = true;
-let volume = 0.5;
-let vocalIndex = 0;
-let falloffTime = 0.5;
-let pitchVariation = 100;
-let specialPunctuation = false;
-let switchToExponentialFalloff = false;
-let uppercasePercentage = 20;
-
 export const enablingText = "Enabled Animalese Sounds. Type away!";
 export const disablingText = "Disabled Animalese Sounds.";
 
+let extensionEnabled = true;
+
 export function activate(context: vscode.ExtensionContext) {
     const config = vscode.workspace.getConfiguration("vscode-animalese");
-    volume = (config.get<number>("volume") ?? 50) / 100;
-    vocalIndex = VOICE_LIST.indexOf(
-        config.get<string>("voice") ?? "Female Voice 1 (Sweet)"
+    (Object.keys(settings) as Array<keyof typeof settings>).forEach(
+        (key: keyof typeof settings) => {
+            (settings as any)[key] =
+                getConfig(key, DEFAULT_SETTINGS[key]) ?? false;
+        }
     );
-    falloffTime = config.get<number>("intonation.falloffTime") ?? 0.5;
-    pitchVariation = config.get<number>("intonation.pitchVariation") ?? 100;
-    specialPunctuation = config.get<boolean>("specialPunctuation") ?? false;
-    switchToExponentialFalloff =
-        config.get<boolean>("intonation.switchToExponentialFalloff") ?? false;
-    uppercasePercentage =
-        config.get<number>("intonation.louderUppercase") ?? 20;
 
     vscode.workspace.onDidChangeConfiguration((event) => {
         if (!event.affectsConfiguration("vscode-animalese")) return;
-        volume = (config.inspect<number>("volume")?.globalValue ?? 50) / 100;
-        vocalIndex = VOICE_LIST.indexOf(
-            config.inspect<string>("voice")?.globalValue ??
-                "Female Voice 1 (Sweet)"
+        (Object.keys(settings) as Array<keyof typeof settings>).forEach(
+            (key: keyof typeof settings) => {
+                (settings as any)[key] =
+                    getConfig(key, DEFAULT_SETTINGS[key], true) ?? false;
+            }
         );
-        falloffTime =
-            config.inspect<number>("intonation.falloffTime")?.globalValue ??
-            0.5;
-        pitchVariation =
-            config.inspect<number>("intonation.pitchVariation")?.globalValue ??
-            100;
-        specialPunctuation =
-            config.inspect<boolean>("specialPunctuation")?.globalValue ?? false;
-        switchToExponentialFalloff =
-            config.inspect<boolean>("intonation.switchToExponentialFalloff")
-                ?.globalValue ?? false;
-        uppercasePercentage =
-            config.inspect<number>("intonation.louderUppercase")?.globalValue ??
-            20;
     });
 
     const toggleCmd = vscode.commands.registerCommand(
@@ -96,19 +73,19 @@ export function activate(context: vscode.ExtensionContext) {
     const setVoiceCmd = vscode.commands.registerCommand(
         "vscode-animalese.setVoice",
         () => {
-            const oldVocalIndex = vocalIndex ?? 0;
+            const oldVoice = settings.voice ?? "Female Voice 1 (Sweet)";
             vscode.window
                 .showQuickPick(VOICE_LIST, {
                     title: "Set Voice",
-                    placeHolder: VOICE_LIST[oldVocalIndex],
+                    placeHolder: oldVoice,
                 })
                 .then((v) => {
                     if (!v) return;
                     vscode.window.showInformationMessage(
                         `Successfully set voice to ${v}.`
                     );
-                    vocalIndex = VOICE_LIST.indexOf(v);
-                    config.update("voice", VOICE_LIST[vocalIndex]);
+                    settings.voice = v;
+                    config.update("voice", settings.voice);
                 });
         }
     );
@@ -116,7 +93,7 @@ export function activate(context: vscode.ExtensionContext) {
     const setVolumeCmd = vscode.commands.registerCommand(
         "vscode-animalese.setVolume",
         () => {
-            const oldVolume = volume ?? 50;
+            const oldVolume = settings.volume ?? 50;
             vscode.window
                 .showInputBox({
                     title: "Set Volume",
@@ -141,11 +118,11 @@ export function activate(context: vscode.ExtensionContext) {
                 })
                 .then((v) => {
                     if (!v) return;
-                    const percentage = Math.floor(parseFloat(v));
+                    const percentage = parseInt(v);
                     vscode.window.showInformationMessage(
                         `Successfully set volume to ${percentage}%.`
                     );
-                    volume = percentage / 100;
+                    settings.volume = percentage;
                     config.update("volume", percentage);
                 });
         }
@@ -153,6 +130,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(setVolumeCmd);
     vscode.workspace.onDidChangeTextDocument((event) => {
         if (!extensionEnabled || !event.contentChanges.length) return;
+
         handleKeyPress(event);
     });
 }
@@ -167,13 +145,22 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
     if (event.contentChanges[0].rangeLength > 0) key = "backspace";
     let filePath = "";
     const cachedPath = PATH_CACHE.get(
-        `${key}${vocalIndex}${+specialPunctuation}`
+        `${key}${VOICE_LIST.indexOf(
+            settings.voice
+        )}${+settings.specialPunctuation}`
     );
     if (cachedPath) {
         filePath = cachedPath;
     } else {
-        filePath = getFilePath(key, vocalIndex, specialPunctuation);
-        PATH_CACHE.set(`${key}${vocalIndex}${+specialPunctuation}`, filePath);
+        filePath = getFilePath(
+            key,
+            VOICE_LIST.indexOf(settings.voice),
+            settings.specialPunctuation
+        );
+        PATH_CACHE.set(
+            `${key}${settings.voice}${+settings.specialPunctuation}`,
+            filePath
+        );
     }
 
     const audioContext = new AudioContext();
@@ -195,26 +182,30 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
     source.buffer = audioData;
     source.detune.value = isMelodic(key)
         ? 0
-        : Math.random() * pitchVariation * 2 - pitchVariation;
+        : Math.random() * settings.intonation_pitchVariation * 2 -
+          settings.intonation_pitchVariation;
     const gainNode = audioContext.createGain();
 
-    let audioVolume = volume;
-    if (uppercasePercentage > 0 && /^[A-Z]$/.test(key)) {
-        audioVolume = audioVolume * (1 + uppercasePercentage / 100);
+    let audioVolume = settings.volume;
+    if (settings.intonation_louderUppercase > 0 && /^[A-Z]$/.test(key)) {
+        audioVolume =
+            audioVolume * (1 + settings.intonation_louderUppercase / 100);
         source.detune.value =
-            1.5 * pitchVariation * (1 + uppercasePercentage / 100);
+            1.5 *
+            settings.intonation_pitchVariation *
+            (1 + settings.intonation_louderUppercase / 100);
     }
 
-    gainNode.gain.setValueAtTime(audioVolume, audioContext.currentTime);
-    if (switchToExponentialFalloff) {
+    gainNode.gain.setValueAtTime(audioVolume / 100, audioContext.currentTime);
+    if (settings.intonation_switchToExponentialFalloff) {
         gainNode.gain.exponentialRampToValueAtTime(
-            0,
-            audioContext.currentTime + falloffTime
+            0.000001,
+            audioContext.currentTime + settings.intonation_falloffTime
         );
     } else {
         gainNode.gain.linearRampToValueAtTime(
             0,
-            audioContext.currentTime + falloffTime
+            audioContext.currentTime + settings.intonation_falloffTime
         );
     }
     source.connect(gainNode);
