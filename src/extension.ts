@@ -1,14 +1,8 @@
-import { readFileSync } from "fs";
+import * as vscode from "vscode";
+import * as fs from "fs";
 import { AudioContext } from "node-web-audio-api";
 import { isMelodic } from "./isParticularType";
 import { getFilePath } from "./getFilePath";
-import {
-    commands,
-    ExtensionContext,
-    workspace,
-    window,
-    TextDocumentChangeEvent,
-} from "vscode";
 
 const VOICE_LIST = [
     "Female Voice 1 (Sweet)",
@@ -36,8 +30,8 @@ let uppercasePercentage = 20;
 export const enablingText = "Enabled Animalese Sounds. Type away!";
 export const disablingText = "Disabled Animalese Sounds.";
 
-export function activate(context: ExtensionContext) {
-    const config = workspace.getConfiguration("vscode-animalese");
+export function activate(context: vscode.ExtensionContext) {
+    const config = vscode.workspace.getConfiguration("vscode-animalese");
     volume = (config.get<number>("volume") ?? 50) / 100;
     vocalIndex = VOICE_LIST.indexOf(
         config.get<string>("voice") ?? "Female Voice 1 (Sweet)"
@@ -50,7 +44,7 @@ export function activate(context: ExtensionContext) {
     uppercasePercentage =
         config.get<number>("intonation.louderUppercase") ?? 20;
 
-    workspace.onDidChangeConfiguration((event) => {
+    vscode.workspace.onDidChangeConfiguration((event) => {
         if (!event.affectsConfiguration("vscode-animalese")) return;
         volume = (config.inspect<number>("volume")?.globalValue ?? 50) / 100;
         vocalIndex = VOICE_LIST.indexOf(
@@ -73,44 +67,44 @@ export function activate(context: ExtensionContext) {
             20;
     });
 
-    const toggleCmd = commands.registerCommand(
+    const toggleCmd = vscode.commands.registerCommand(
         "vscode-animalese.toggle",
         () => {
             extensionEnabled = !extensionEnabled;
-            window.showInformationMessage(
+            vscode.window.showInformationMessage(
                 extensionEnabled ? enablingText : disablingText
             );
         }
     );
     context.subscriptions.push(toggleCmd);
-    const disableCmd = commands.registerCommand(
+    const disableCmd = vscode.commands.registerCommand(
         "vscode-animalese.disable",
         () => {
             extensionEnabled = false;
-            window.showInformationMessage(disablingText);
+            vscode.window.showInformationMessage(disablingText);
         }
     );
     context.subscriptions.push(disableCmd);
-    const enableCmd = commands.registerCommand(
+    const enableCmd = vscode.commands.registerCommand(
         "vscode-animalese.enable",
         () => {
             extensionEnabled = true;
-            window.showInformationMessage(enablingText);
+            vscode.window.showInformationMessage(enablingText);
         }
     );
     context.subscriptions.push(enableCmd);
-    const setVoiceCmd = commands.registerCommand(
+    const setVoiceCmd = vscode.commands.registerCommand(
         "vscode-animalese.setVoice",
         () => {
             const oldVocalIndex = vocalIndex ?? 0;
-            window
+            vscode.window
                 .showQuickPick(VOICE_LIST, {
                     title: "Set Voice",
                     placeHolder: VOICE_LIST[oldVocalIndex],
                 })
                 .then((v) => {
                     if (!v) return;
-                    window.showInformationMessage(
+                    vscode.window.showInformationMessage(
                         `Successfully set voice to ${v}.`
                     );
                     vocalIndex = VOICE_LIST.indexOf(v);
@@ -119,11 +113,11 @@ export function activate(context: ExtensionContext) {
         }
     );
     context.subscriptions.push(setVoiceCmd);
-    const setVolumeCmd = commands.registerCommand(
+    const setVolumeCmd = vscode.commands.registerCommand(
         "vscode-animalese.setVolume",
         () => {
             const oldVolume = volume ?? 50;
-            window
+            vscode.window
                 .showInputBox({
                     title: "Set Volume",
                     prompt: "What would you like the volume % to be? The response should be an integer within 1-100.",
@@ -148,7 +142,7 @@ export function activate(context: ExtensionContext) {
                 .then((v) => {
                     if (!v) return;
                     const percentage = Math.floor(parseFloat(v));
-                    window.showInformationMessage(
+                    vscode.window.showInformationMessage(
                         `Successfully set volume to ${percentage}%.`
                     );
                     volume = percentage / 100;
@@ -157,7 +151,7 @@ export function activate(context: ExtensionContext) {
         }
     );
     context.subscriptions.push(setVolumeCmd);
-    workspace.onDidChangeTextDocument((event) => {
+    vscode.workspace.onDidChangeTextDocument((event) => {
         if (!extensionEnabled || !event.contentChanges.length) return;
         handleKeyPress(event);
     });
@@ -165,7 +159,7 @@ export function activate(context: ExtensionContext) {
 
 export function deactivate() {}
 
-export async function handleKeyPress(event: TextDocumentChangeEvent) {
+export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
     let key = event.contentChanges[0].text.replaceAll("\r", "").slice(0, 1);
     if (/^( ){2,}$/.test(event.contentChanges[0].text)) {
         key = "tab";
@@ -188,7 +182,7 @@ export async function handleKeyPress(event: TextDocumentChangeEvent) {
     if (cachedBuffer) {
         audioData = cachedBuffer;
     } else {
-        const initialBuffer = readFileSync(filePath);
+        const initialBuffer = fs.readFileSync(filePath);
         const audioBuffer = initialBuffer.buffer.slice(
             initialBuffer.byteOffset,
             initialBuffer.byteOffset + initialBuffer.byteLength
