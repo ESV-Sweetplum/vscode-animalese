@@ -5,7 +5,8 @@ out/**
 src/**
 .gitignore
 .yarnrc
-webpack.config.js
+**/webpack.config.js
+**/jest.config.js
 vsc-extension-quickstart.md
 **/tsconfig.json
 **/eslint.config.mjs
