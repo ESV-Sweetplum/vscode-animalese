@@ -108,7 +108,7 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
     gainNode.gain.setValueAtTime(audioVolume / 100, audioContext.currentTime);
     if (settings.intonation_switchToExponentialFalloff) {
         gainNode.gain.exponentialRampToValueAtTime(
-            0.000001,
+            1e-5,
             audioContext.currentTime + settings.intonation_falloffTime
         );
     } else {
