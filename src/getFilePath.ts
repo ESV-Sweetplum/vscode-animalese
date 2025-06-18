@@ -9,11 +9,12 @@ import {
 export function getFilePath(
     key: string,
     vocalIndex: number,
-    specialPunctuation: boolean
+    specialPunctuation: boolean,
+    soundOverride: string
 ) {
-    let filePath = "";
+    if (soundOverride) return soundOverride;
 
-    // return path.join(__dirname, "..\\audio\\vineboom.mp3");
+    let filePath = "";
 
     switch (true) {
         case isAlphabetical(key.toLowerCase()): {

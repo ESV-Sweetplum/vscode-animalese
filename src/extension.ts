@@ -59,18 +59,26 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
             settings.voice
         )}${+settings.specialPunctuation}`
     );
-    if (cachedPath) {
+    if (cachedPath && !settings.soundOverride) {
         filePath = cachedPath;
     } else {
         filePath = getFilePath(
             key,
             VOICE_LIST.indexOf(settings.voice),
-            settings.specialPunctuation
+            settings.specialPunctuation,
+            settings.soundOverride
         );
         PATH_CACHE.set(
             `${key}${settings.voice}${+settings.specialPunctuation}`,
             filePath
         );
+    }
+
+    if (!fs.existsSync(filePath)) {
+        vscode.window.showErrorMessage(
+            "The provided custom sound does not exist. Please change the soundOverride parameter to a valid path."
+        );
+        return;
     }
 
     const audioContext = new AudioContext();
@@ -87,7 +95,14 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
             initialBuffer.byteOffset,
             initialBuffer.byteOffset + initialBuffer.byteLength
         );
-        audioData = await audioContext.decodeAudioData(audioBuffer);
+        try {
+            audioData = await audioContext.decodeAudioData(audioBuffer);
+        } catch (e) {
+            vscode.window.showErrorMessage(
+                "The provided custom sound is not a valid audio type."
+            );
+            return;
+        }
 
         const audioValues = audioData.getChannelData(0);
 
@@ -138,5 +153,4 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
     source.onended = (_) => {
         audioContext.close();
     };
-    console.log(delay);
 }

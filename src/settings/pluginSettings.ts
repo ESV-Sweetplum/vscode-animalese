@@ -6,6 +6,7 @@ export const settings = {
     intonation_switchToExponentialFalloff: false,
     intonation_louderUppercase: 20,
     specialPunctuation: false,
+    soundOverride: "",
 };
 
 export const DEFAULT_SETTINGS = structuredClone(settings);

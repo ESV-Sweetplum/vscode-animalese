@@ -71,6 +71,11 @@
                     "markdownDescription": "Overrides the default sounds for the keys `!`, `?`, and `Enter`.",
                     "order": 3
                 },
+                "vscode-animalese.soundOverride": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "Replace **ALL** sounds with an absolute path to the given sound file."
+                },
                 "vscode-animalese.intonation.louderUppercase": {
                     "type": "number",
                     "default": 20,
