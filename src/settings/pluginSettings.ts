@@ -9,4 +9,4 @@ export const settings = {
     soundOverride: "",
 };
 
-export const DEFAULT_SETTINGS = structuredClone(settings);
+export const DEFAULT_SETTINGS = structuredClone(settings); // Necessary to create a deep clone, so this object isn't modified when the original `settings` object is changed.

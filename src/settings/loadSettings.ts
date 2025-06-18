@@ -1,6 +1,10 @@
 import { getConfig } from "./configState";
 import { DEFAULT_SETTINGS, settings } from "./pluginSettings";
 
+/**
+ * ### (IMPURE) Gets all settings and loads them into the `settings` object, which is a defined global.
+ * @param firstRun Whether or not this function has been run for the first time.
+ */
 export function loadSettings(firstRun: boolean) {
     (Object.keys(settings) as Array<keyof typeof settings>).forEach(
         (key: keyof typeof settings) => {

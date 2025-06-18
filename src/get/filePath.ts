@@ -11,7 +11,7 @@ export function getFilePath(
     vocalIndex: number,
     pluginSettings: typeof settings
 ) {
-    if (pluginSettings.soundOverride) return pluginSettings.soundOverride;
+    if (pluginSettings.soundOverride) return pluginSettings.soundOverride; // Reminder that soundOverride is an absolute path to the desired sound.
 
     let filePath = "";
 
@@ -23,6 +23,9 @@ export function getFilePath(
     if (cachedPath && !settings.soundOverride) {
         return cachedPath;
     }
+
+    // Note: some funky math tricks were used to greatly simplify converting vocalIndex (0-7) to male/female voices 1-4. Here, `vocalIndex = 0-3` represents female voices 1-4, while `vocalIndex = 4-7` represents male voices 1-4.
+
     switch (true) {
         case isAlphabetical(key): {
             filePath = path.join(
