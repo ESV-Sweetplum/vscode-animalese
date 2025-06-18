@@ -14,6 +14,7 @@ import { VOICE_LIST } from "./constants/voiceList";
 
 const PATH_CACHE: Map<string, string> = new Map();
 const BUFFER_CACHE: Map<string, AudioBuffer> = new Map();
+const DELAY_CACHE: Map<string, number> = new Map();
 
 export let extensionEnabled = true;
 
@@ -75,8 +76,11 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
     const audioContext = new AudioContext();
     let audioData: AudioBuffer;
     let cachedBuffer = BUFFER_CACHE.get(filePath);
-    if (cachedBuffer) {
+    let cachedDelay = DELAY_CACHE.get(filePath);
+    let delay = 0;
+    if (cachedBuffer && cachedDelay) {
         audioData = cachedBuffer;
+        delay = cachedDelay;
     } else {
         const initialBuffer = fs.readFileSync(filePath);
         const audioBuffer = initialBuffer.buffer.slice(
@@ -84,7 +88,18 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
             initialBuffer.byteOffset + initialBuffer.byteLength
         );
         audioData = await audioContext.decodeAudioData(audioBuffer);
+
+        const audioValues = audioData.getChannelData(0);
+
+        for (let i = 0; i < audioValues.length; i++) {
+            if (audioValues[i] !== 0) {
+                delay = i / audioData.sampleRate;
+                break;
+            }
+        }
+
         BUFFER_CACHE.set(filePath, audioData);
+        DELAY_CACHE.set(filePath, delay);
     }
 
     const source = audioContext.createBufferSource();
@@ -119,8 +134,9 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
     }
     source.connect(gainNode);
     gainNode.connect(audioContext.destination);
-    source.start();
+    source.start(0, delay);
     source.onended = (_) => {
         audioContext.close();
     };
+    console.log(delay);
 }

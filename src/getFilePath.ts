@@ -13,6 +13,8 @@ export function getFilePath(
 ) {
     let filePath = "";
 
+    // return path.join(__dirname, "..\\audio\\vineboom.mp3");
+
     switch (true) {
         case isAlphabetical(key.toLowerCase()): {
             filePath = path.join(
