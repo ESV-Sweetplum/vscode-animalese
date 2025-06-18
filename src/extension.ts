@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import * as fs from "fs";
 import { AudioContext } from "node-web-audio-api";
 import { isMelodic } from "./isParticularType";
-import { getFilePath } from "./getFilePath";
+import { getFilePath } from "./get/filePath";
 import { settings } from "./settings/pluginSettings";
 import { loadSettings } from "./settings/loadSettings";
 import { getToggleCommand } from "./commands/toggle";
@@ -11,13 +11,9 @@ import { getDisableCommand } from "./commands/disable";
 import { getSetVoiceCommand } from "./commands/setVoice";
 import { getSetVolumeCommand } from "./commands/setVolume";
 import { VOICE_LIST } from "./constants/voiceList";
-
-const PATH_CACHE: Map<string, string> = new Map();
-const BUFFER_CACHE: Map<string, AudioBuffer> = new Map();
-const DELAY_CACHE: Map<string, number> = new Map();
+import getAudioBuffer from "./get/audioBuffer";
 
 export let extensionEnabled = true;
-
 export const setExtensionEnabled = (val: boolean) => (extensionEnabled = val);
 
 export function activate(context: vscode.ExtensionContext) {
@@ -53,26 +49,11 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
         key = "tab";
     }
     if (event.contentChanges[0].rangeLength > 0) key = "backspace";
-    let filePath = "";
-    const cachedPath = PATH_CACHE.get(
-        `${key}${VOICE_LIST.indexOf(
-            settings.voice
-        )}${+settings.specialPunctuation}`
+    let filePath = getFilePath(
+        key,
+        VOICE_LIST.indexOf(settings.voice),
+        settings
     );
-    if (cachedPath && !settings.soundOverride) {
-        filePath = cachedPath;
-    } else {
-        filePath = getFilePath(
-            key,
-            VOICE_LIST.indexOf(settings.voice),
-            settings.specialPunctuation,
-            settings.soundOverride
-        );
-        PATH_CACHE.set(
-            `${key}${settings.voice}${+settings.specialPunctuation}`,
-            filePath
-        );
-    }
 
     if (!fs.existsSync(filePath)) {
         vscode.window.showErrorMessage(
@@ -82,40 +63,7 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
     }
 
     const audioContext = new AudioContext();
-    let audioData: AudioBuffer;
-    let cachedBuffer = BUFFER_CACHE.get(filePath);
-    let cachedDelay = DELAY_CACHE.get(filePath);
-    let delay = 0;
-    if (cachedBuffer && cachedDelay) {
-        audioData = cachedBuffer;
-        delay = cachedDelay;
-    } else {
-        const initialBuffer = fs.readFileSync(filePath);
-        const audioBuffer = initialBuffer.buffer.slice(
-            initialBuffer.byteOffset,
-            initialBuffer.byteOffset + initialBuffer.byteLength
-        );
-        try {
-            audioData = await audioContext.decodeAudioData(audioBuffer);
-        } catch (e) {
-            vscode.window.showErrorMessage(
-                "The provided custom sound is not a valid audio type."
-            );
-            return;
-        }
-
-        const audioValues = audioData.getChannelData(0);
-
-        for (let i = 0; i < audioValues.length; i++) {
-            if (audioValues[i] !== 0) {
-                delay = i / audioData.sampleRate;
-                break;
-            }
-        }
-
-        BUFFER_CACHE.set(filePath, audioData);
-        DELAY_CACHE.set(filePath, delay);
-    }
+    const { audioData, delay } = await getAudioBuffer(filePath, audioContext);
 
     const source = audioContext.createBufferSource();
     source.buffer = audioData;

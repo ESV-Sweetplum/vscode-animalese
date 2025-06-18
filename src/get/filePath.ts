@@ -1,21 +1,28 @@
 import path from "path";
-import {
-    HARMONIC_CHARACTERS,
-    isAlphabetical,
-    isHarmonic,
-    isSymbolic,
-} from "./isParticularType";
+import { isAlphabetical, isHarmonic, isSymbolic } from "../isParticularType";
+import { HARMONIC_CHARACTERS } from "../constants/charTypes";
+import { settings } from "../settings/pluginSettings";
+import { VOICE_LIST } from "../constants/voiceList";
+
+const PATH_CACHE: Map<string, string> = new Map();
 
 export function getFilePath(
     key: string,
     vocalIndex: number,
-    specialPunctuation: boolean,
-    soundOverride: string
+    pluginSettings: typeof settings
 ) {
-    if (soundOverride) return soundOverride;
+    if (pluginSettings.soundOverride) return pluginSettings.soundOverride;
 
     let filePath = "";
 
+    const cachedPath = PATH_CACHE.get(
+        `${key}${VOICE_LIST.indexOf(
+            settings.voice
+        )}${+settings.specialPunctuation}`
+    );
+    if (cachedPath && !settings.soundOverride) {
+        return cachedPath;
+    }
     switch (true) {
         case isAlphabetical(key): {
             filePath = path.join(
@@ -38,7 +45,7 @@ export function getFilePath(
             break;
         }
         case key === "!" || key === "?" || key.includes("\n"): {
-            if (specialPunctuation) {
+            if (pluginSettings.specialPunctuation) {
                 const noise = { "!": "Gwah", "?": "Deska", "\n": "OK" };
                 filePath = path.join(
                     __dirname,
@@ -67,6 +74,11 @@ export function getFilePath(
             break;
         }
     }
+    PATH_CACHE.set(
+        `${key}${settings.voice}${+settings.specialPunctuation}`,
+        filePath
+    );
+
     return filePath;
 }
 
