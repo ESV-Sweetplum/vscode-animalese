@@ -6,6 +6,7 @@
 -   Added a custom sound override, where you can replace all keypresses with a sound of your choice
 -   Changed some setting descriptions to be more accurate
 -   Fixed bug where ^ symbol would be included in alphabetical search
+-   Now properly restricts input of volume command to be within [0-100].
 
 ## v0.2.0
 
