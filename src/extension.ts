@@ -11,7 +11,7 @@ import { getDisableCommand } from "./commands/disable";
 import { getSetVoiceCommand } from "./commands/setVoice";
 import { getSetVolumeCommand } from "./commands/setVolume";
 import { VOICE_LIST } from "./constants/voiceList";
-import getAudioBuffer from "./get/audioBuffer";
+import getAudioData from "./get/audioData";
 
 export let extensionEnabled = true;
 export const setExtensionEnabled = (val: boolean) => (extensionEnabled = val);
@@ -21,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     vscode.workspace.onDidChangeConfiguration((event) => {
         if (!event.affectsConfiguration("vscode-animalese")) return;
-        loadSettings(false);
+        loadSettings(false); // Needed to update the `settings` variable for immediate effect.
     });
 
     const commands = [
@@ -46,9 +46,10 @@ export function deactivate() {}
 export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
     let key = event.contentChanges[0].text.replaceAll("\r", "").slice(0, 1);
     if (/^( ){2,}$/.test(event.contentChanges[0].text)) {
-        key = "tab";
+        key = "tab"; // Only if the text is 2 or more spaces.
     }
-    if (event.contentChanges[0].rangeLength > 0) key = "backspace";
+    if (event.contentChanges[0].rangeLength > 0) key = "backspace"; // Assume backspace is pressed, upon any text being deleted/replaced. There's not really a better way to do this.
+
     let filePath = getFilePath(
         key,
         VOICE_LIST.indexOf(settings.voice),
@@ -63,16 +64,16 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
     }
 
     const audioContext = new AudioContext();
-    const { audioData, delay } = await getAudioBuffer(filePath, audioContext);
+    const { audioBuffer, delay } = await getAudioData(filePath, audioContext);
 
     const source = audioContext.createBufferSource();
-    source.buffer = audioData;
+    source.buffer = audioBuffer;
     source.detune.value = isMelodic(key)
         ? 0
         : Math.random() * settings.intonation_pitchVariation * 2 -
           settings.intonation_pitchVariation;
-    const gainNode = audioContext.createGain();
 
+    const gainNode = audioContext.createGain();
     let audioVolume = settings.volume;
     if (settings.intonation_louderUppercase > 0 && /^[A-Z]$/.test(key)) {
         audioVolume =
@@ -86,7 +87,7 @@ export async function handleKeyPress(event: vscode.TextDocumentChangeEvent) {
     gainNode.gain.setValueAtTime(audioVolume / 100, audioContext.currentTime);
     if (settings.intonation_switchToExponentialFalloff) {
         gainNode.gain.exponentialRampToValueAtTime(
-            1e-5,
+            1e-5, // Exponential function can never equal 0.
             audioContext.currentTime + settings.intonation_falloffTime
         );
     } else {

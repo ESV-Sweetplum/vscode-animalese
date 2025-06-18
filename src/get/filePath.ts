@@ -6,11 +6,18 @@ import { VOICE_LIST } from "../constants/voiceList";
 
 const PATH_CACHE: Map<string, string> = new Map();
 
+/**
+ * ### Gets the corresponding audio path to the given input.
+ * @param key The keyboard input that will determine the file used.
+ * @param vocalIndex A number within [0-7] which corresponds to one of the default voices.
+ * @param pluginSettings Settings o the plugin, mainly used for small differences in behavior.
+ * @returns {string} The path to the file which should be played.
+ */
 export function getFilePath(
     key: string,
     vocalIndex: number,
     pluginSettings: typeof settings
-) {
+): string {
     if (pluginSettings.soundOverride) return pluginSettings.soundOverride; // Reminder that soundOverride is an absolute path to the desired sound.
 
     let filePath = "";

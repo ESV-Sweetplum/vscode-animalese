@@ -27,7 +27,7 @@ export function getConfig<T>(
  * @param key The vscode id of the setting, with underscores instead of dots. For example, to find `vscode-animalese.intonation.falloffTime`, this should be `intonation_falloffTime`.
  * @param value The value to assign to the setting.
  */
-export function setConfig(key: keyof typeof settings, value: any) {
+export function setConfig(key: keyof typeof settings, value: any): void {
     const config = vscode.workspace.getConfiguration("vscode-animalese");
 
     (settings as any)[key] = value;
