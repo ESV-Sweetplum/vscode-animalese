@@ -74,7 +74,8 @@
                 "vscode-animalese.soundOverride": {
                     "type": "string",
                     "default": "",
-                    "markdownDescription": "Replace **ALL** sounds with an absolute path to the given sound file."
+                    "markdownDescription": "Replace **ALL** sounds with an absolute path to the given sound file.",
+                    "order": 4
                 },
                 "vscode-animalese.intonation.louderUppercase": {
                     "type": "number",
