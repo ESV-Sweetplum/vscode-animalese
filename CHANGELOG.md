@@ -3,8 +3,9 @@
 ## v0.2.1
 
 -   Now automatically removes silent audio at the beginning of samples to reduce latency even further
--   Added a custom sound override, where you can replace all keypresses with a sound of your choice.
--   Changed some setting descriptions to be more accurate.
+-   Added a custom sound override, where you can replace all keypresses with a sound of your choice
+-   Changed some setting descriptions to be more accurate
+-   Fixed bug where ^ symbol would be included in alphabetical search
 
 ## v0.2.0
 

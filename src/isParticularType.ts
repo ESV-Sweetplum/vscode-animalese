@@ -35,7 +35,7 @@ export function isMelodic(char: string | number): boolean {
 
 export function isAlphabetical(char: string | number): boolean {
     if (typeof char === "number") return false;
-    return /^[A-z]$/.test(char);
+    return /^[a-z]$/i.test(char);
 }
 
 export function isHarmonic(char: string | number): boolean {

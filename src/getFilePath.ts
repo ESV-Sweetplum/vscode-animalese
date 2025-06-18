@@ -4,6 +4,7 @@ import {
     isAlphabetical,
     isHarmonic,
     isSymbolic,
+    SYMBOLS,
 } from "./isParticularType";
 
 export function getFilePath(
@@ -17,7 +18,7 @@ export function getFilePath(
     let filePath = "";
 
     switch (true) {
-        case isAlphabetical(key.toLowerCase()): {
+        case isAlphabetical(key): {
             filePath = path.join(
                 __dirname,
                 `..\\audio\\animalese\\${
