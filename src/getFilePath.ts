@@ -4,7 +4,6 @@ import {
     isAlphabetical,
     isHarmonic,
     isSymbolic,
-    SYMBOLS,
 } from "./isParticularType";
 
 export function getFilePath(
