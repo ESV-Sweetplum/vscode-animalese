@@ -31,24 +31,26 @@ export function getFilePath(
         return cachedPath;
     }
 
+    const slash = process.platform === "win32" ? "\\" : "/"
+
     // Note: some funky math tricks were used to greatly simplify converting vocalIndex (0-7) to male/female voices 1-4. Here, `vocalIndex = 0-3` represents female voices 1-4, while `vocalIndex = 4-7` represents male voices 1-4.
 
     switch (true) {
         case isAlphabetical(key): {
             filePath = path.join(
                 __dirname,
-                `..\\audio\\animalese\\${
+                `..${slash}audio${slash}animalese${slash}${
                     vocalIndex <= 3 ? "female" : "male"
-                }\\voice_${(vocalIndex % 4) + 1}\\${key}.mp3`
+                }${slash}voice_${(vocalIndex % 4) + 1}${slash}${key}.mp3`
             );
             break;
         }
         case isHarmonic(key): {
             filePath = path.join(
                 __dirname,
-                `..\\audio\\vocals\\${
+                `..${slash}audio${slash}vocals${slash}${
                     vocalIndex <= 3 ? "female" : "male"
-                }\\voice_${(vocalIndex % 4) + 1}\\${HARMONIC_CHARACTERS.indexOf(
+                }${slash}voice_${(vocalIndex % 4) + 1}${slash}${HARMONIC_CHARACTERS.indexOf(
                     key
                 )}.mp3`
             );
@@ -59,9 +61,9 @@ export function getFilePath(
                 const noise = { "!": "Gwah", "?": "Deska", "\n": "OK" };
                 filePath = path.join(
                     __dirname,
-                    `..\\audio\\animalese\\${
+                    `..${slash}audio${slash}animalese${slash}${
                         vocalIndex <= 3 ? "female" : "male"
-                    }\\voice_${(vocalIndex % 4) + 1}\\${
+                    }${slash}voice_${(vocalIndex % 4) + 1}${slash}${
                         noise[key as keyof typeof noise]
                     }.mp3`
                 );
@@ -71,16 +73,16 @@ export function getFilePath(
         case isSymbolic(key): {
             filePath = path.join(
                 __dirname,
-                `..\\audio\\sfx\\${symbolToName(key) ?? "default"}.mp3`
+                `..${slash}audio${slash}sfx${slash}${symbolToName(key) ?? "default"}.mp3`
             );
             break;
         }
         case ["tab", "backspace"].includes(key): {
-            filePath = path.join(__dirname, `..\\audio\\sfx\\${key}.mp3`);
+            filePath = path.join(__dirname, `..${slash}audio${slash}sfx${slash}${key}.mp3`);
             break;
         }
         default: {
-            filePath = path.join(__dirname, `..\\audio\\sfx\\default.mp3`);
+            filePath = path.join(__dirname, `..${slash}audio${slash}sfx${slash}default.mp3`);
             break;
         }
     }
