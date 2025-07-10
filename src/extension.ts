@@ -17,9 +17,7 @@ export let extensionEnabled = true
 export const setExtensionEnabled = (val: boolean) => (extensionEnabled = val)
 
 export function activate(context: vscode.ExtensionContext) {
-	console.debug('activate')
 	loadSettings(true)
-	// test
 
 	vscode.workspace.onDidChangeConfiguration((event) => {
 		if (!event.affectsConfiguration('vscode-animalese')) return
