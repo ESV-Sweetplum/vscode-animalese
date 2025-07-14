@@ -1,160 +1,160 @@
 {
-    "name": "vscode-animalese",
-    "displayName": "VSCode Animalese",
-    "description": "Makes animal crossing sounds whenever you type. Highly customizable with very low latency, written with a Node.js adaptation of the Web Audio API.",
-    "version": "0.2.1",
-    "publisher": "AidanHsiao",
-    "engines": {
-        "vscode": "^1.101.0"
-    },
-    "categories": [
-        "Other"
-    ],
-    "activationEvents": [
-        "onStartupFinished"
-    ],
-    "main": "./dist/extension.js",
-    "contributes": {
-        "commands": [
-            {
-                "command": "vscode-animalese.enable",
-                "title": "vscode-animalese: Enable Animalese Sounds"
-            },
-            {
-                "command": "vscode-animalese.disable",
-                "title": "vscode-animalese: Disable Animalese Sounds"
-            },
-            {
-                "command": "vscode-animalese.toggle",
-                "title": "vscode-animalese: Toggle Animalese Sounds"
-            },
-            {
-                "command": "vscode-animalese.setVolume",
-                "title": "vscode-animalese: Set Animalese Volume"
-            },
-            {
-                "command": "vscode-animalese.setVoice",
-                "title": "vscode-animalese: Set Animalese Voice"
-            }
-        ],
-        "configuration": {
-            "title": "VSCode Animalese",
-            "type": "object",
-            "properties": {
-                "vscode-animalese.volume": {
-                    "type": "integer",
-                    "default": 50,
-                    "description": "This value dictates, in percentage, how loud the animalese sounds should be.",
-                    "order": 1,
-                    "minimum": 0,
-                    "maximum": 100
-                },
-                "vscode-animalese.voice": {
-                    "type": "string",
-                    "enum": [
-                        "Female Voice 1 (Sweet)",
-                        "Female Voice 2 (Peppy)",
-                        "Female Voice 3 (Big Sister)",
-                        "Female Voice 4 (Snooty)",
-                        "Male Voice 1 (Jock)",
-                        "Male Voice 2 (Lazy)",
-                        "Male Voice 3 (Smug)",
-                        "Male Voice 4 (Cranky)"
-                    ],
-                    "default": "Female Voice 1 (Sweet)",
-                    "description": "Determines the voice that will be talking. This setting only applies to alphanumerical characters.",
-                    "order": 2
-                },
-                "vscode-animalese.specialPunctuation": {
-                    "type": "boolean",
-                    "default": false,
-                    "markdownDescription": "Overrides the default sounds for the keys `!`, `?`, and `Enter`.",
-                    "order": 3
-                },
-                "vscode-animalese.soundOverride": {
-                    "type": "string",
-                    "default": "",
-                    "markdownDescription": "Replace **ALL** sounds with an absolute path to the given sound file.",
-                    "order": 4
-                },
-                "vscode-animalese.intonation.louderUppercase": {
-                    "type": "number",
-                    "default": 20,
-                    "description": "Indicates the percentage increase that uppercase letters will make, over lowercase letters. For example, if this value is 25, the volume of any uppercase letter will be 125%.",
-                    "minimum": 0
-                },
-                "vscode-animalese.intonation.falloffTime": {
-                    "type": "number",
-                    "default": 0.5,
-                    "description": "When a key is pressed, the audio slowly fades out over the course of the track. This value determines how many seconds it takes before the audio fully fades out.",
-                    "minimum": 0
-                },
-                "vscode-animalese.intonation.pitchVariation": {
-                    "type": "integer",
-                    "default": 100,
-                    "markdownDescription": "For any key except for vocal keys, randomly shift the pitch of the audio up or down by, at most, the amount of [cents](https://en.wikipedia.org/wiki/Cent_%28music%29) given.",
-                    "minimum": 0
-                },
-                "vscode-animalese.intonation.switchToExponentialFalloff": {
-                    "type": "boolean",
-                    "default": false,
-                    "markdownDescription": "If checked, the audio volume will fall off at an exponential rate instead of a linear one."
-                }
-            }
-        }
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run package",
-        "compile": "webpack",
-        "watch": "webpack --watch",
-        "package": "webpack --mode production --devtool hidden-source-map",
-        "compile-tests": "tsc -p . --outDir out",
-        "watch-tests": "tsc -p . -w --outDir out",
-        "lint": "eslint src",
-        "test": "jest"
-    },
-    "devDependencies": {
-        "@types/jest": "^29.5.14",
-        "@types/mocha": "^10.0.10",
-        "@types/node": "20.x",
-        "@types/vscode": "^1.101.0",
-        "@typescript-eslint/eslint-plugin": "^8.31.1",
-        "@typescript-eslint/parser": "^8.31.1",
-        "@vscode/test-cli": "^0.0.10",
-        "@vscode/test-electron": "^2.5.2",
-        "eslint": "^9.25.1",
-        "jest": "^29.7.0",
-        "node-loader": "^2.1.0",
-        "ts-jest": "^29.4.0",
-        "ts-loader": "^9.5.2",
-        "typescript": "^5.8.3",
-        "webpack": "^5.99.7",
-        "webpack-cli": "^6.0.1"
-    },
-    "dependencies": {
-        "node-web-audio-api": "^1.0.4"
-    },
-    "icon": "./public/icon.png",
-    "galleryBanner": {
-        "color": "#e0d0b4",
-        "theme": "light"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ESV-Sweetplum/vscode-animalese.git"
-    },
-    "homepage": "https://github.com/ESV-Sweetplum/vscode-animalese/blob/main/README.md",
-    "license": "https://github.com/ESV-Sweetplum/vscode-animalese/blob/main/LICENSE",
-    "keywords": [
-        "Animalese",
-        "Animal Crossing",
-        "Tom Nook",
-        "Isabelle",
-        "Typing Sound",
-        "Sound",
-        "Audio",
-        "Keypress Audio",
-        "Keypress Sounds",
-        "Typing Sounds"
-    ]
+	"name": "vscode-animalese",
+	"displayName": "VSCode Animalese",
+	"description": "Makes animal crossing sounds whenever you type. Highly customizable with very low latency, written with a Node.js adaptation of the Web Audio API.",
+	"version": "0.2.1",
+	"publisher": "AidanHsiao",
+	"engines": {
+		"vscode": "^1.101.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "vscode-animalese.enable",
+				"title": "vscode-animalese: Enable Animalese Sounds"
+			},
+			{
+				"command": "vscode-animalese.disable",
+				"title": "vscode-animalese: Disable Animalese Sounds"
+			},
+			{
+				"command": "vscode-animalese.toggle",
+				"title": "vscode-animalese: Toggle Animalese Sounds"
+			},
+			{
+				"command": "vscode-animalese.setVolume",
+				"title": "vscode-animalese: Set Animalese Volume"
+			},
+			{
+				"command": "vscode-animalese.setVoice",
+				"title": "vscode-animalese: Set Animalese Voice"
+			}
+		],
+		"configuration": {
+			"title": "VSCode Animalese",
+			"type": "object",
+			"properties": {
+				"vscode-animalese.volume": {
+					"type": "integer",
+					"default": 50,
+					"description": "This value dictates, in percentage, how loud the animalese sounds should be.",
+					"order": 1,
+					"minimum": 0,
+					"maximum": 100
+				},
+				"vscode-animalese.voice": {
+					"type": "string",
+					"enum": [
+						"Female Voice 1 (Sweet)",
+						"Female Voice 2 (Peppy)",
+						"Female Voice 3 (Big Sister)",
+						"Female Voice 4 (Snooty)",
+						"Male Voice 1 (Jock)",
+						"Male Voice 2 (Lazy)",
+						"Male Voice 3 (Smug)",
+						"Male Voice 4 (Cranky)"
+					],
+					"default": "Female Voice 1 (Sweet)",
+					"description": "Determines the voice that will be talking. This setting only applies to alphanumerical characters.",
+					"order": 2
+				},
+				"vscode-animalese.specialPunctuation": {
+					"type": "boolean",
+					"default": false,
+					"markdownDescription": "Overrides the default sounds for the keys `!`, `?`, and `Enter`.",
+					"order": 3
+				},
+				"vscode-animalese.soundOverride": {
+					"type": "string",
+					"default": "",
+					"markdownDescription": "Replace **ALL** sounds with an absolute path to the given sound file.",
+					"order": 4
+				},
+				"vscode-animalese.intonation.louderUppercase": {
+					"type": "number",
+					"default": 20,
+					"description": "Indicates the percentage increase that uppercase letters will make, over lowercase letters. For example, if this value is 25, the volume of any uppercase letter will be 125%.",
+					"minimum": 0
+				},
+				"vscode-animalese.intonation.falloffTime": {
+					"type": "number",
+					"default": 0.5,
+					"description": "When a key is pressed, the audio slowly fades out over the course of the track. This value determines how many seconds it takes before the audio fully fades out.",
+					"minimum": 0
+				},
+				"vscode-animalese.intonation.pitchVariation": {
+					"type": "integer",
+					"default": 100,
+					"markdownDescription": "For any key except for vocal keys, randomly shift the pitch of the audio up or down by, at most, the amount of [cents](https://en.wikipedia.org/wiki/Cent_%28music%29) given.",
+					"minimum": 0
+				},
+				"vscode-animalese.intonation.switchToExponentialFalloff": {
+					"type": "boolean",
+					"default": false,
+					"markdownDescription": "If checked, the audio volume will fall off at an exponential rate instead of a linear one."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run package",
+		"compile": "webpack",
+		"watch": "webpack --watch",
+		"package": "webpack --mode production --devtool hidden-source-map",
+		"compile-tests": "tsc -p . --outDir out",
+		"watch-tests": "tsc -p . -w --outDir out",
+		"lint": "eslint src",
+		"test": "jest"
+	},
+	"devDependencies": {
+		"@types/jest": "^29.5.14",
+		"@types/mocha": "^10.0.10",
+		"@types/node": "20.x",
+		"@types/vscode": "^1.101.0",
+		"@typescript-eslint/eslint-plugin": "^8.31.1",
+		"@typescript-eslint/parser": "^8.31.1",
+		"@vscode/test-cli": "^0.0.10",
+		"@vscode/test-electron": "^2.5.2",
+		"eslint": "^9.25.1",
+		"jest": "^29.7.0",
+		"node-loader": "^2.1.0",
+		"ts-jest": "^29.4.0",
+		"ts-loader": "^9.5.2",
+		"typescript": "^5.8.3",
+		"webpack": "^5.99.7",
+		"webpack-cli": "^6.0.1"
+	},
+	"dependencies": {
+		"node-web-audio-api": "^1.0.4"
+	},
+	"icon": "public/icon.png",
+	"galleryBanner": {
+		"color": "#e0d0b4",
+		"theme": "light"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ESV-Sweetplum/vscode-animalese.git"
+	},
+	"homepage": "https://github.com/ESV-Sweetplum/vscode-animalese/blob/main/README.md",
+	"license": "https://github.com/ESV-Sweetplum/vscode-animalese/blob/main/LICENSE",
+	"keywords": [
+		"Animalese",
+		"Animal Crossing",
+		"Tom Nook",
+		"Isabelle",
+		"Typing Sound",
+		"Sound",
+		"Audio",
+		"Keypress Audio",
+		"Keypress Sounds",
+		"Typing Sounds"
+	]
 }
