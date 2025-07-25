@@ -14,6 +14,7 @@ const PATH_CACHE: Map<string, string> = new Map();
  * @returns {string} The path to the file which should be played.
  */
 export function getFilePath(
+    extensionPath: string,
     key: string,
     vocalIndex: number,
     pluginSettings: typeof settings
@@ -31,58 +32,43 @@ export function getFilePath(
         return cachedPath;
     }
 
-    const slash = process.platform === "win32" ? "\\" : "/"
-
     // Note: some funky math tricks were used to greatly simplify converting vocalIndex (0-7) to male/female voices 1-4. Here, `vocalIndex = 0-3` represents female voices 1-4, while `vocalIndex = 4-7` represents male voices 1-4.
+    const animalesePath = path.join(extensionPath, "audio", "animalese",
+        vocalIndex <= 3 ? "female" : "male",
+        `voice_${(vocalIndex % 4) + 1}`,
+    );
+    const vocalsPath = path.join(extensionPath, "audio", "vocals",
+        vocalIndex <= 3 ? "female" : "male",
+        `voice_${(vocalIndex % 4) + 1}`,
+    );
+    const sfxPath = path.join(extensionPath, "audio", "sfx");
 
     switch (true) {
         case isAlphabetical(key): {
-            filePath = path.join(
-                __dirname,
-                `..${slash}audio${slash}animalese${slash}${
-                    vocalIndex <= 3 ? "female" : "male"
-                }${slash}voice_${(vocalIndex % 4) + 1}${slash}${key}.mp3`
-            );
+            filePath = path.join(animalesePath, `${key}.mp3`);
             break;
         }
         case isHarmonic(key): {
-            filePath = path.join(
-                __dirname,
-                `..${slash}audio${slash}vocals${slash}${
-                    vocalIndex <= 3 ? "female" : "male"
-                }${slash}voice_${(vocalIndex % 4) + 1}${slash}${HARMONIC_CHARACTERS.indexOf(
-                    key
-                )}.mp3`
-            );
+            filePath = path.join(vocalsPath, `${HARMONIC_CHARACTERS.indexOf(key)}.mp3`);
             break;
         }
         case key === "!" || key === "?" || key.includes("\n"): {
             if (pluginSettings.specialPunctuation) {
                 const noise = { "!": "Gwah", "?": "Deska", "\n": "OK" };
-                filePath = path.join(
-                    __dirname,
-                    `..${slash}audio${slash}animalese${slash}${
-                        vocalIndex <= 3 ? "female" : "male"
-                    }${slash}voice_${(vocalIndex % 4) + 1}${slash}${
-                        noise[key as keyof typeof noise]
-                    }.mp3`
-                );
+                filePath = path.join(animalesePath, `${noise[key as keyof typeof noise]}.mp3`);
                 break;
             }
         }
         case isSymbolic(key): {
-            filePath = path.join(
-                __dirname,
-                `..${slash}audio${slash}sfx${slash}${symbolToName(key) ?? "default"}.mp3`
-            );
+            filePath = path.join(sfxPath, `${symbolToName(key) ?? "default"}.mp3`);
             break;
         }
         case ["tab", "backspace"].includes(key): {
-            filePath = path.join(__dirname, `..${slash}audio${slash}sfx${slash}${key}.mp3`);
+            filePath = path.join(sfxPath, `${key}.mp3`);
             break;
         }
         default: {
-            filePath = path.join(__dirname, `..${slash}audio${slash}sfx${slash}default.mp3`);
+            filePath = path.join(sfxPath, `default.mp3`);
             break;
         }
     }

@@ -134,7 +134,7 @@
     "dependencies": {
         "node-web-audio-api": "^1.0.4"
     },
-    "icon": "./public/icon.png",
+    "icon": "public/icon.png",
     "galleryBanner": {
         "color": "#e0d0b4",
         "theme": "light"
