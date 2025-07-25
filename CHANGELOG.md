@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.2
+
+-   vscode-animalese now works on MacOS and Linux! Big thanks to [iandoesallthethings](https://github.com/iandoesallthethings) for writing the PR.
+
 ## v0.2.1
 
 -   Reduced file size by around half
