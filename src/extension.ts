@@ -60,10 +60,16 @@ export async function handleKeyPress(
         settings
     );
 
-    if (!fs.existsSync(filePath)) {
-        vscode.window.showErrorMessage(
-            "The provided custom sound does not exist. Please change the soundOverride parameter to a valid path."
-        );
+    if (!fs.existsSync(filePath) && settings.soundOverride) {
+        if (settings.soundOverride) {
+            vscode.window.showErrorMessage(
+                "The provided custom sound does not exist. Please change the soundOverride parameter to a valid path."
+            );
+        } else {
+            vscode.window.showErrorMessage(
+                `An unknown error occurred trying to find the sound file corresponding to key ${key}. Please raise an issue on the GitHub repository with the file path "${filePath}".`
+            );
+        }
         return;
     }
 
