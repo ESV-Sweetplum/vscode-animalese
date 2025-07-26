@@ -1,5 +1,5 @@
-import { getConfig } from "./configState";
-import { DEFAULT_SETTINGS, settings } from "./pluginSettings";
+import { getConfig } from './configState';
+import { DEFAULT_SETTINGS, settings } from './pluginSettings';
 
 /**
  * ### (IMPURE) Gets all settings and loads them into the `settings` object, which is a defined global.

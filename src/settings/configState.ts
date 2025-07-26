@@ -1,5 +1,5 @@
-import * as vscode from "vscode";
-import { settings } from "./pluginSettings";
+import * as vscode from 'vscode';
+import { settings } from './pluginSettings';
 
 /**
  * ### Gets a specified setting's value.
@@ -13,9 +13,9 @@ export function getConfig<T>(
     defaultValue: T,
     changedConfig = false
 ): T {
-    const config = vscode.workspace.getConfiguration("vscode-animalese");
+    const config = vscode.workspace.getConfiguration('vscode-animalese');
 
-    const configKey = key.replaceAll("_", ".");
+    const configKey = key.replaceAll('_', '.');
     if (changedConfig) {
         return config.inspect<T>(configKey)?.globalValue ?? defaultValue;
     }
@@ -28,8 +28,8 @@ export function getConfig<T>(
  * @param value The value to assign to the setting.
  */
 export function setConfig(key: keyof typeof settings, value: any): void {
-    const config = vscode.workspace.getConfiguration("vscode-animalese");
+    const config = vscode.workspace.getConfiguration('vscode-animalese');
 
     (settings as any)[key] = value;
-    config.update(key.replaceAll("_", "."), value, true); // Always save to global by passing `true` as the third param.
+    config.update(key.replaceAll('_', '.'), value, true); // Always save to global by passing `true` as the third param.
 }

@@ -1,5 +1,5 @@
-import * as vscode from "vscode";
-import * as fs from "fs";
+import * as vscode from 'vscode';
+import * as fs from 'fs';
 
 const BUFFER_CACHE: Map<string, AudioBuffer> = new Map();
 const DELAY_CACHE: Map<string, number> = new Map();
@@ -37,9 +37,9 @@ export default async function getAudioData(
         audioBuffer = await context.decodeAudioData(fileBuffer);
     } catch (e) {
         vscode.window.showErrorMessage(
-            "The provided custom sound is not a valid audio type."
+            'The provided custom sound is not a valid audio type.'
         );
-        throw new Error("The provided custom sound is not a valid audio type.");
+        throw new Error('The provided custom sound is not a valid audio type.');
     }
 
     const audioValues = audioBuffer.getChannelData(0);
