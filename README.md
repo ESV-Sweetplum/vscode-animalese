@@ -26,7 +26,7 @@
 
 ## More Detailed Configuration List
 
-> ⚠️ **The execution of this plugin is very rudimentary, and has not been tested on any other platform besides Windows.** If there is a pressing issue to solve, please raise an issue within the [GitHub repository](https://github.com/ESV-Sweetplum/vscode-animalese).
+> ⚠️ **The execution of this plugin is very rudimentary, and has not been thoroughly tested on any other platform besides Windows.** If there is a pressing issue to solve, please raise an issue within the [GitHub repository](https://github.com/ESV-Sweetplum/vscode-animalese).
 
 -   `vscode-animalese.volume` (integer between 0-100): Controls the volume of the keysounds, where 100% is max volume.
 -   `vscode-animalese.voice` (selectable from 8 different voices): Customize the timbre of the keysounds with 8 different voice profiles (yoinked from [`animalese-typing`](https://www.npmjs.com/package/sound-play)).
@@ -34,5 +34,8 @@
     -   `?` -> `です？` or "desuka?"
     -   `!` -> `グア~` or "gwah~"
     -   `Enter` -> `おーけ` or "OK"
+-   `vscode-animalese.intonation.louderUppercase` (positive number): Adjusts the output volume produced by uppercase letters. To be exact, the number used here should indicate how many percent above the normal volume the uppercase sounds should use.
 -   `vscode-animalese.intonation.falloffTime` (positive number): Determines how many seconds it takes for the audio to fade out (although each keysound is not above a second regardless, so this value should be like 0.75 at most).
 -   `vscode-animalese.intonation.pitchVariation` (positive integer): Adjusts the strength of pitch variation between duplicate key pressed. If set to 0, all keypresses of the same key (such as pressing the `e` key 7 times) will sound identical.
+-   `vscode-animalese.intonation.switchToExponentialFalloff` (boolean): If set to true, the audio level (in decibels) will decrease exponentially instead of linearly. Turning this on creates a slightly more "realistic" falloff, as the decibal system is inherently exponential.
+-   `vscode-animalese.soundOverride` (absolute path): Replace **_ALL_** sounds produced by `vscode-animalese` with a sound of your choice. Supports `.mp3`, `.wav`, `.aac`, and `.ogg`.
