@@ -22,7 +22,9 @@
 > **All commands are prefaced with the namespace `vscode-animalese:`.**
 
 -   `Enable/Disable/Toggle Animalese Sounds`: Self-explanatory.
--   `Set Animalese Volume/Voice`: Self-explanatory
+-   `Set Animalese Volume/Voice`: Self-explanatory.
+-   `Toggle Only Animalese SFX`: Toggles between playing only sound effects (no vocal sounds) or all sounds.
+-   `Toggle Harmonic Animalese SFX`: Toggles whether sound effects include harmonic overtones for richer sound.
 
 ## More Detailed Configuration List
 
@@ -39,3 +41,5 @@
 -   `vscode-animalese.intonation.pitchVariation` (positive integer): Adjusts the strength of pitch variation between duplicate key pressed. If set to 0, all keypresses of the same key (such as pressing the `e` key 7 times) will sound identical.
 -   `vscode-animalese.intonation.switchToExponentialFalloff` (boolean): If set to true, the audio level (in decibels) will decrease exponentially instead of linearly. Turning this on creates a slightly more "realistic" falloff, as the decibal system is inherently exponential.
 -   `vscode-animalese.soundOverride` (absolute path): Replace **_ALL_** sounds produced by `vscode-animalese` with a sound of your choice. Supports `.mp3`, `.wav`, `.aac`, and `.ogg`.
+-   `vscode-animalese.onlySFX` (boolean): If set to true, only sound effects (non-vocal sounds) will be played when typing. Alphabetical characters will use a default SFX sound instead of animalese voices.
+-   `vscode-animalese.harmonicSFX` (boolean): If set to true, sound effects will have harmonic overtones added to them for a richer, more musical sound. Harmonic characters will use the default sound when this is enabled.

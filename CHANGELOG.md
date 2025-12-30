@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2.3
+
+-   Added `onlySFX` configuration to play only sound effects without vocal sounds (includes toggle command)
+-   Added `harmonicSFX` configuration to toggle harmonic sounds for numbers and - = characters (includes toggle command)
+
 ## v0.2.2
 
 -   vscode-animalese now works on MacOS and Linux! Big thanks to [iandoesallthethings](https://github.com/iandoesallthethings) for writing the PR.

@@ -2,7 +2,7 @@
     "name": "vscode-animalese",
     "displayName": "VSCode Animalese",
     "description": "Makes animal crossing sounds whenever you type. Highly customizable with very low latency, written with a Node.js adaptation of the Web Audio API.",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "publisher": "AidanHsiao",
     "engines": {
         "vscode": "^1.101.0"
@@ -35,6 +35,14 @@
             {
                 "command": "vscode-animalese.setVoice",
                 "title": "vscode-animalese: Set Animalese Voice"
+            },
+                     {
+                "command": "vscode-animalese.toggleSFX",
+                "title": "vscode-animalese: Toggle Only Animalese SFX"
+            },
+            {
+                "command": "vscode-animalese.toggleHarmonicSFX",
+                "title": "vscode-animalese: Toggle Harmonic Animalese SFX"
             }
         ],
         "configuration": {
@@ -99,6 +107,16 @@
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "If checked, the audio volume will fall off at an exponential rate instead of a linear one."
+                }, 
+                "vscode-animalese.onlySFX": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "If checked, only sound effects (non-vocal sounds) will be played when typing."
+                },
+                "vscode-animalese.harmonicSFX": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "If checked, sound effects will have harmonic overtones added to them for a richer sound."
                 }
             }
         }

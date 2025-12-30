@@ -10,6 +10,8 @@ import { getEnableCommand } from './commands/enable';
 import { getDisableCommand } from './commands/disable';
 import { getSetVoiceCommand } from './commands/setVoice';
 import { getSetVolumeCommand } from './commands/setVolume';
+import { getToggleSFXCommand } from './commands/toggleSFX';
+import { getToggleHarmonicSFXCommand } from './commands/toggleHarmonicSFX';
 import { VOICE_LIST } from './constants/voiceList';
 import getAudioData from './get/audioData';
 
@@ -30,6 +32,8 @@ export function activate(context: vscode.ExtensionContext) {
         getDisableCommand(),
         getSetVoiceCommand(),
         getSetVolumeCommand(),
+        getToggleSFXCommand(),
+        getToggleHarmonicSFXCommand(),
     ];
 
     context.subscriptions.push(...commands);

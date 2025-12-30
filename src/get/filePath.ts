@@ -22,12 +22,22 @@ export function getFilePath(
     if (pluginSettings.soundOverride) return pluginSettings.soundOverride; // Reminder that soundOverride is an absolute path to the desired sound.
 
     let filePath = '';
+    let cachedPath: string | undefined;
 
-    const cachedPath = PATH_CACHE.get(
+    if (settings.onlySFX) {
+        key = isAlphabetical(key) ? 'default' : key;
+    }
+
+    if (settings.harmonicSFX) {
+        key = !isHarmonic(key) ? key : 'default';
+    }
+
+    cachedPath = PATH_CACHE.get(
         `${key}${VOICE_LIST.indexOf(
             settings.voice
-        )}${+settings.specialPunctuation}`
+        )}${+settings.specialPunctuation}${+settings.onlySFX}${+settings.harmonicSFX}`
     );
+    
     if (cachedPath && !settings.soundOverride) {
         return cachedPath;
     }
@@ -88,7 +98,7 @@ export function getFilePath(
         }
     }
     PATH_CACHE.set(
-        `${key}${settings.voice}${+settings.specialPunctuation}`,
+        `${key}${settings.voice}${+settings.specialPunctuation}${+settings.onlySFX}${+settings.harmonicSFX}`,
         filePath
     );
 
