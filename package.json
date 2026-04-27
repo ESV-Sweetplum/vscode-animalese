@@ -36,7 +36,7 @@
                 "command": "vscode-animalese.setVoice",
                 "title": "vscode-animalese: Set Animalese Voice"
             },
-                     {
+            {
                 "command": "vscode-animalese.toggleSFX",
                 "title": "vscode-animalese: Toggle Only Animalese SFX"
             },
@@ -107,7 +107,7 @@
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "If checked, the audio volume will fall off at an exponential rate instead of a linear one."
-                }, 
+                },
                 "vscode-animalese.onlySFX": {
                     "type": "boolean",
                     "default": false,
@@ -117,6 +117,16 @@
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "If checked, sound effects will have harmonic overtones added to them for a richer sound."
+                },
+                "vscode-animalese.languageSupports": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["korean"]
+                    },
+                    "default": [],
+                    "markdownDescription": "Enable language-specific input support. Add `\"korean\"` to enable Korean (Hangul) character mapping. Currently supported: `korean`.",
+                    "order": 5
                 }
             }
         }
@@ -150,6 +160,7 @@
         "webpack-cli": "^6.0.1"
     },
     "dependencies": {
+        "hangul-js": "^0.2.6",
         "node-web-audio-api": "^1.0.4"
     },
     "icon": "public/icon.png",

@@ -14,6 +14,7 @@ import { getToggleSFXCommand } from './commands/toggleSFX';
 import { getToggleHarmonicSFXCommand } from './commands/toggleHarmonicSFX';
 import { VOICE_LIST } from './constants/voiceList';
 import getAudioData from './get/audioData';
+import { translate } from './languages/translate';
 
 export let extensionEnabled = true;
 export const setExtensionEnabled = (val: boolean) => (extensionEnabled = val);
@@ -51,11 +52,11 @@ export async function handleKeyPress(
     context: vscode.ExtensionContext,
     event: vscode.TextDocumentChangeEvent
 ) {
-    let key = event.contentChanges[0].text.replaceAll('\r', '').slice(0, 1);
-    if (/^( ){2,}$/.test(event.contentChanges[0].text)) {
-        key = 'tab'; // Only if the text is 2 or more spaces.
+    const { key, playAudio } = translate(event.contentChanges[0]);
+
+    if (!playAudio) {
+        return;
     }
-    if (event.contentChanges[0].rangeLength > 0) key = 'backspace'; // Assume backspace is pressed, upon any text being deleted/replaced. There's not really a better way to do this.
 
     let filePath = getFilePath(
         context.extensionPath,

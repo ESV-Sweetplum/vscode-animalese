@@ -9,6 +9,7 @@ export const settings = {
     intonation_louderUppercase: 20,
     specialPunctuation: false,
     soundOverride: '',
+    languageSupports: [] as string[]
 };
 
 export const DEFAULT_SETTINGS = structuredClone(settings); // Necessary to create a deep clone, so this object isn't modified when the original `settings` object is changed.

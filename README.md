@@ -43,3 +43,4 @@
 -   `vscode-animalese.soundOverride` (absolute path): Replace **_ALL_** sounds produced by `vscode-animalese` with a sound of your choice. Supports `.mp3`, `.wav`, `.aac`, and `.ogg`.
 -   `vscode-animalese.onlySFX` (boolean): If set to true, only sound effects (non-vocal sounds) will be played when typing. Alphabetical characters will use a default SFX sound instead of animalese voices.
 -   `vscode-animalese.harmonicSFX` (boolean): If set to true, sound effects will have harmonic overtones added to them for a richer, more musical sound. Harmonic characters will use the default sound when this is enabled.
+-   `vscode-animalese.languageSupports` (string array): Enable language-specific input support. Add `"korean"` to enable Korean (Hangul) character mapping. Currently supported values: `"korean"`.
