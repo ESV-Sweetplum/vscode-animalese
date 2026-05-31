@@ -24,11 +24,11 @@ export function getFilePath(
     let filePath = '';
     let cachedPath: string | undefined;
 
-    if (settings.onlySFX) {
+    if (settings.alphabeticalSounds) {
         key = isAlphabetical(key) ? 'default' : key;
     }
 
-    if (!settings.harmonicSFX && isHarmonic(key)) {
+    if (!settings.harmonicSounds && isHarmonic(key)) {
         key = 'default';
     }
 
@@ -65,7 +65,7 @@ export function getFilePath(
             break;
         }
         case isHarmonic(key): {
-            if (pluginSettings.harmonicSFX) {
+            if (pluginSettings.harmonicSounds) {
                 filePath = path.join(vocalsPath, `${HARMONIC_CHARACTERS.indexOf(key)}.mp3`);
             } else {
                 filePath = path.join(sfxPath, 'default.mp3');

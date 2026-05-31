@@ -1,8 +1,8 @@
 export const settings = {
     volume: 50,
     voice: 'Female Voice 1 (Sweet)',
-    onlySFX: false,
-    harmonicSFX: true,
+    alphabeticalSounds: false,
+    harmonicSounds: true,
     diacriticRecognition: true,
     intonation_falloffTime: 0.5,
     intonation_pitchVariation: 100,

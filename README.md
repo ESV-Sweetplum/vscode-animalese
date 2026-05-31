@@ -23,8 +23,8 @@
 
 - `Enable/Disable/Toggle Animalese Sounds`: Self-explanatory.
 - `Set Animalese Volume/Voice`: Self-explanatory.
-- `Toggle Only Animalese SFX`: Toggles between playing only sound effects (no vocal sounds) or all sounds.
-- `Toggle Harmonic Animalese SFX`: Toggles top row keys (number keys and - or =) playing harmonic sounds.
+- `Toggle Alphabetical Animalese Sounds`: Toggles alphabetical keys (a-z) playing individual sounds.
+- `Toggle Harmonic Animalese Sounds`: Toggles top row keys (number keys and - or =) playing harmonic sounds.
 
 ## More Detailed Configuration List
 
@@ -41,6 +41,6 @@
 - `vscode-animalese.intonation.pitchVariation` (positive integer): Adjusts the strength of pitch variation between duplicate key pressed. If set to 0, all keypresses of the same key (such as pressing the `e` key 7 times) will sound identical.
 - `vscode-animalese.intonation.switchToExponentialFalloff` (boolean): If set to true, the audio level (in decibels) will decrease exponentially instead of linearly. Turning this on creates a slightly more "realistic" falloff, as the decibal system is inherently exponential.
 - `vscode-animalese.soundOverride` (absolute path): Replace **_ALL_** sounds produced by `vscode-animalese` with a sound of your choice. Supports `.mp3`, `.wav`, `.aac`, and `.ogg`.
-- `vscode-animalese.onlySFX` (boolean): If set to true, only sound effects (non-vocal sounds) will be played when typing. Alphabetical characters will use a default SFX sound instead of animalese voices.
-- `vscode-animalese.harmonicSFX` (boolean): If set to true, number keys and adjacent keys (- and = keys) will play harmonic sounds, similar to a piano. Harmonic keys will use the default sound when this is disabled.
+- `vscode-animalese.alphabeticalSounds` (boolean): If set to true, alphabetical characters will have their own sounds.
+- `vscode-animalese.harmonicSounds` (boolean): If set to true, number keys and adjacent keys (- and = keys) will play harmonic sounds, similar to a piano. Harmonic keys will use the default sound when this is disabled.
 - `vscode-animalese.diacriticRecognition` (boolean): If set to true, letters with diacritics will play the sound that the diacritic-less letter would play. Otherwise, plays the default sound on specified key presses.

@@ -37,12 +37,12 @@
                 "title": "vscode-animalese: Set Animalese Voice"
             },
             {
-                "command": "vscode-animalese.toggleSFX",
-                "title": "vscode-animalese: Toggle Only Animalese SFX"
+                "command": "vscode-animalese.toggleAlphabeticalSounds",
+                "title": "vscode-animalese: Toggle Alphabetical Animalese Sounds"
             },
             {
-                "command": "vscode-animalese.toggleHarmonicSFX",
-                "title": "vscode-animalese: Toggle Harmonic Animalese SFX"
+                "command": "vscode-animalese.toggleHarmonicSounds",
+                "title": "vscode-animalese: Toggle Harmonic Animalese Sounds"
             },
             {
                 "command": "vscode-animalese.toggleDiacriticRecognition",
@@ -112,12 +112,12 @@
                     "default": false,
                     "markdownDescription": "If checked, the audio volume will fall off at an exponential rate instead of a linear one."
                 },
-                "vscode-animalese.onlySFX": {
+                "vscode-animalese.alphabeticalSounds": {
                     "type": "boolean",
-                    "default": false,
-                    "markdownDescription": "If checked, only non-vocal sounds will be played when typing alphabetical characters."
+                    "default": true,
+                    "markdownDescription": "If checked, alphabetical characters will have their own sounds."
                 },
-                "vscode-animalese.harmonicSFX": {
+                "vscode-animalese.harmonicSounds": {
                     "type": "boolean",
                     "default": true,
                     "markdownDescription": "If checked, number keys and adjacent keys (- and = keys) will play harmonic sounds, similar to a piano."

@@ -4,13 +4,13 @@ import { AudioContext } from 'node-web-audio-api';
 import { getFilePath } from './get/filePath';
 import { settings } from './settings/pluginSettings';
 import { loadSettings } from './settings/loadSettings';
-import { getToggleCommand } from './commands/toggle';
+import { getToggleExtensionCommand } from './commands/toggleExtension';
 import { getEnableCommand } from './commands/enable';
 import { getDisableCommand } from './commands/disable';
 import { getSetVoiceCommand } from './commands/setVoice';
 import { getSetVolumeCommand } from './commands/setVolume';
-import { getToggleSFXCommand } from './commands/toggleSFX';
-import { getToggleHarmonicSFXCommand } from './commands/toggleHarmonicSFX';
+import { getToggleSoundsCommand } from './commands/toggleAlphabeticalSounds';
+import { getToggleHarmonicSoundsCommand } from './commands/toggleHarmonicSounds';
 import { getToggleDiacriticRecognitionCommand } from './commands/toggleDiacriticRecognition';
 import { VOICE_LIST } from './constants/voiceList';
 import getAudioData from './get/audioData';
@@ -28,13 +28,13 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     const commands = [
-        getToggleCommand(),
         getEnableCommand(),
         getDisableCommand(),
+        getToggleExtensionCommand(),
         getSetVoiceCommand(),
         getSetVolumeCommand(),
-        getToggleSFXCommand(),
-        getToggleHarmonicSFXCommand(),
+        getToggleSoundsCommand(),
+        getToggleHarmonicSoundsCommand(),
         getToggleDiacriticRecognitionCommand(),
     ];
 
