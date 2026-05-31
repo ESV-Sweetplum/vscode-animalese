@@ -9,9 +9,6 @@ import { getEnableCommand } from './commands/enable';
 import { getDisableCommand } from './commands/disable';
 import { getSetVoiceCommand } from './commands/setVoice';
 import { getSetVolumeCommand } from './commands/setVolume';
-import { getToggleSoundsCommand } from './commands/toggleAlphabeticalSounds';
-import { getToggleHarmonicSoundsCommand } from './commands/toggleHarmonicSounds';
-import { getToggleDiacriticRecognitionCommand } from './commands/toggleDiacriticRecognition';
 import { VOICE_LIST } from './constants/voiceList';
 import getAudioData from './get/audioData';
 import { isHarmonic } from './isParticularType';
@@ -33,9 +30,6 @@ export function activate(context: vscode.ExtensionContext) {
         getToggleExtensionCommand(),
         getSetVoiceCommand(),
         getSetVolumeCommand(),
-        getToggleSoundsCommand(),
-        getToggleHarmonicSoundsCommand(),
-        getToggleDiacriticRecognitionCommand(),
     ];
 
     context.subscriptions.push(...commands);
@@ -58,10 +52,10 @@ export async function handleKeyPress(context: vscode.ExtensionContext, event: vs
 
     let filePath = getFilePath(context.extensionPath, key, VOICE_LIST.indexOf(settings.voice), settings);
 
-    if (!fs.existsSync(filePath) && settings.soundOverride) {
-        if (settings.soundOverride) {
+    if (!fs.existsSync(filePath) && settings.sounds_override) {
+        if (settings.sounds_override) {
             vscode.window.showErrorMessage(
-                'The provided custom sound does not exist. Please change the soundOverride parameter to a valid path.',
+                'The provided custom sound does not exist. Please change the sounds.override parameter to a valid path.',
             );
         } else {
             vscode.window.showErrorMessage(

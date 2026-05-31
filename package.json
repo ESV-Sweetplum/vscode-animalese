@@ -35,18 +35,6 @@
             {
                 "command": "vscode-animalese.setVoice",
                 "title": "vscode-animalese: Set Animalese Voice"
-            },
-            {
-                "command": "vscode-animalese.toggleAlphabeticalSounds",
-                "title": "vscode-animalese: Toggle Alphabetical Animalese Sounds"
-            },
-            {
-                "command": "vscode-animalese.toggleHarmonicSounds",
-                "title": "vscode-animalese: Toggle Harmonic Animalese Sounds"
-            },
-            {
-                "command": "vscode-animalese.toggleDiacriticRecognition",
-                "title": "vscode-animalese: Toggle Diacritic Recognition"
             }
         ],
         "configuration": {
@@ -77,18 +65,6 @@
                     "description": "Determines the voice that will be talking. This setting only applies to alphanumerical characters.",
                     "order": 2
                 },
-                "vscode-animalese.specialPunctuation": {
-                    "type": "boolean",
-                    "default": false,
-                    "markdownDescription": "Overrides the default sounds for the keys `!`, `?`, and `Enter`.",
-                    "order": 3
-                },
-                "vscode-animalese.soundOverride": {
-                    "type": "string",
-                    "default": "",
-                    "markdownDescription": "Replace **ALL** sounds with an absolute path to the given sound file.",
-                    "order": 4
-                },
                 "vscode-animalese.intonation.louderUppercase": {
                     "type": "number",
                     "default": 20,
@@ -112,17 +88,27 @@
                     "default": false,
                     "markdownDescription": "If checked, the audio volume will fall off at an exponential rate instead of a linear one."
                 },
-                "vscode-animalese.alphabeticalSounds": {
+                "vscode-animalese.sounds.specialPunctuation": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Overrides the default sounds for the keys `!`, `?`, and `Enter`."
+                },
+                "vscode-animalese.sounds.override": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "Replace **ALL** sounds with an absolute path to the given sound file."
+                },
+                "vscode-animalese.sounds.alphabetical": {
                     "type": "boolean",
                     "default": true,
                     "markdownDescription": "If checked, alphabetical characters will have their own sounds."
                 },
-                "vscode-animalese.harmonicSounds": {
+                "vscode-animalese.sounds.harmonic": {
                     "type": "boolean",
                     "default": true,
                     "markdownDescription": "If checked, number keys and adjacent keys (- and = keys) will play harmonic sounds, similar to a piano."
                 },
-                "vscode-animalese.diacriticRecognition": {
+                "vscode-animalese.sounds.diacriticRecognition": {
                     "type": "boolean",
                     "default": true,
                     "markdownDescription": "If checked, letters with diacritics will play the sound that the diacritic-less letter would play. Otherwise, plays the default sound on specified key presses."

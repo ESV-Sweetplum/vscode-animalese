@@ -4,5 +4,5 @@ import { settings } from '../settings/pluginSettings';
 export default function getCacheString(key: string) {
     return `${key}${VOICE_LIST.indexOf(
         settings.voice,
-    )}${+settings.specialPunctuation}${+settings.alphabeticalSounds}${+settings.harmonicSounds}${+settings.diacriticRecognition}`;
+    )}${+settings.sounds_specialPunctuation}${+settings.sounds_alphabetical}${+settings.sounds_harmonic}${+settings.sounds_diacriticRecognition}`;
 }

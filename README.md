@@ -2,7 +2,7 @@
 
 ![Typescript Image](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) ![Webpack Image](https://img.shields.io/badge/Webpack-8DD6F9?style=for-the-badge&logo=Webpack&logoColor=white)
 
-![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/esv-sweetplum/vscode-animalese) ![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/AidanHsiao.vscode-animalese?style=plastic&color=%23e0d0b4) ![Visual Studio Marketplace Release Date](https://img.shields.io/visual-studio-marketplace/release-date/AidanHsiao.vscode-animalese) ![GitHub License](https://img.shields.io/github/license/esv-sweetplum/vscode-animalese) ![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/stars/AidanHsiao.vscode-animalese)
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/esv-sweetplum/vscode-animalese) ![GitHub License](https://img.shields.io/github/license/esv-sweetplum/vscode-animalese)
 
 <center><i><b> "Not Strictly Advisable From A Business Perspective, But Quite Generous. Yes yes!"  - Tom Nook</b></i></center>
 
@@ -32,15 +32,15 @@
 
 - `vscode-animalese.volume` (integer between 0-100): Controls the volume of the keysounds, where 100% is max volume.
 - `vscode-animalese.voice` (selectable from 8 different voices): Customize the timbre of the keysounds with 8 different voice profiles (yoinked from [`animalese-typing`](https://www.npmjs.com/package/sound-play)).
-- `vscode-animalese.specialPunctuation` (boolean): By default, `!`, `?` and `Enter` produce special sounds that represent the ends of sentences. To override this with a standard voice, set this setting to `true`. This will result in the following characters-to-sounds map:
-    - `?` -> `です？` or "desuka?"
-    - `!` -> `グア~` or "gwah~"
-    - `Enter` -> `おーけ` or "OK"
 - `vscode-animalese.intonation.louderUppercase` (positive number): Adjusts the output volume produced by uppercase letters. To be exact, the number used here should indicate how many percent above the normal volume the uppercase sounds should use.
 - `vscode-animalese.intonation.falloffTime` (positive number): Determines how many seconds it takes for the audio to fade out (although each keysound is not above a second regardless, so this value should be like 0.75 at most).
 - `vscode-animalese.intonation.pitchVariation` (positive integer): Adjusts the strength of pitch variation between duplicate key pressed. If set to 0, all keypresses of the same key (such as pressing the `e` key 7 times) will sound identical.
 - `vscode-animalese.intonation.switchToExponentialFalloff` (boolean): If set to true, the audio level (in decibels) will decrease exponentially instead of linearly. Turning this on creates a slightly more "realistic" falloff, as the decibal system is inherently exponential.
-- `vscode-animalese.soundOverride` (absolute path): Replace **_ALL_** sounds produced by `vscode-animalese` with a sound of your choice. Supports `.mp3`, `.wav`, `.aac`, and `.ogg`.
-- `vscode-animalese.alphabeticalSounds` (boolean): If set to true, alphabetical characters will have their own sounds.
-- `vscode-animalese.harmonicSounds` (boolean): If set to true, number keys and adjacent keys (- and = keys) will play harmonic sounds, similar to a piano. Harmonic keys will use the default sound when this is disabled.
-- `vscode-animalese.diacriticRecognition` (boolean): If set to true, letters with diacritics will play the sound that the diacritic-less letter would play. Otherwise, plays the default sound on specified key presses.
+- `vscode-animalese.sounds.override` (absolute path): Replace **_ALL_** sounds produced by `vscode-animalese` with a sound of your choice. Supports `.mp3`, `.wav`, `.aac`, and `.ogg`.
+- `vscode-animalese.sounds.specialPunctuation` (boolean): By default, `!`, `?` and `Enter` produce special sounds that represent the ends of sentences. To override this with a standard voice, set this setting to `true`. This will result in the following characters-to-sounds map:
+    - `?` -> `です？` or "desuka?"
+    - `!` -> `グア~` or "gwah~"
+    - `Enter` -> `おーけ` or "OK"
+- `vscode-animalese.sounds.alphabetical` (boolean): If set to true, alphabetical characters will have their own sounds.
+- `vscode-animalese.sounds.harmonic` (boolean): If set to true, number keys and adjacent keys (- and = keys) will play harmonic sounds, similar to a piano. Harmonic keys will use the default sound when this is disabled.
+- `vscode-animalese.sounds.diacriticRecognition` (boolean): If set to true, letters with diacritics will play the sound that the diacritic-less letter would play. Otherwise, plays the default sound on specified key presses.

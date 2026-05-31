@@ -19,26 +19,26 @@ export function getFilePath(
     vocalIndex: number,
     pluginSettings: typeof settings,
 ): string {
-    if (pluginSettings.soundOverride) return pluginSettings.soundOverride; // Reminder that soundOverride is an absolute path to the desired sound.
+    if (pluginSettings.sounds_override) return pluginSettings.sounds_override; // Reminder that sounds.override is an absolute path to the desired sound.
 
     let filePath = '';
     let cachedPath: string | undefined;
 
-    if (settings.alphabeticalSounds) {
+    if (settings.sounds_alphabetical) {
         key = isAlphabetical(key) ? 'default' : key;
     }
 
-    if (!settings.harmonicSounds && isHarmonic(key)) {
+    if (!settings.sounds_harmonic && isHarmonic(key)) {
         key = 'default';
     }
 
-    if (settings.diacriticRecognition) {
+    if (settings.sounds_diacriticRecognition) {
         key = key.normalize('NFD').replace(/[ ̀-◌ͯ]/g, '');
     }
 
     cachedPath = PATH_CACHE.get(getCacheString(key));
 
-    if (cachedPath && !settings.soundOverride) {
+    if (cachedPath && !settings.sounds_override) {
         return cachedPath;
     }
 
@@ -65,7 +65,7 @@ export function getFilePath(
             break;
         }
         case isHarmonic(key): {
-            if (pluginSettings.harmonicSounds) {
+            if (pluginSettings.sounds_harmonic) {
                 filePath = path.join(vocalsPath, `${HARMONIC_CHARACTERS.indexOf(key)}.mp3`);
             } else {
                 filePath = path.join(sfxPath, 'default.mp3');
@@ -73,7 +73,7 @@ export function getFilePath(
             break;
         }
         case key === '!' || key === '?' || key.includes('\n'): {
-            if (pluginSettings.specialPunctuation) {
+            if (pluginSettings.sounds_specialPunctuation) {
                 const noise = { '!': 'Gwah', '?': 'Deska', '\n': 'OK' };
                 filePath = path.join(animalesePath, `${noise[key as keyof typeof noise]}.mp3`);
                 break;

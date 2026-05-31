@@ -2,9 +2,9 @@
 
 ## v0.2.3
 
-- Added the `alphabeticalSounds` configuration to toggle individual sounds for alphabetical characters.
-- Added the `harmonicSounds` configuration to toggle harmonic sounds for numbers and `-`/`=` characters. This addition and the above addition are courtesy of [KaeruDev](https://github.com/KaeruDev).
-- Added `diacriticRecognition` configuration to toggle sound effects for characters with various diacritics (thanks to [RobotoSkunk](https://github.com/RobotoSkunk)) for the suggestion!
+- Added the `sounds.alphabetical` configuration to toggle individual sounds for alphabetical characters.
+- Added the `sounds.harmonic` configuration to toggle harmonic sounds for numbers and `-`/`=` characters. This addition and the above addition are courtesy of [KaeruDev](https://github.com/KaeruDev).
+- Added `sounds.diacriticRecognition` configuration to toggle sound effects for characters with various diacritics; thanks to [RobotoSkunk](https://github.com/RobotoSkunk) for the suggestion!
 
 ## v0.2.2
 
