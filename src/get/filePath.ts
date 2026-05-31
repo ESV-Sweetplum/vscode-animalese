@@ -24,8 +24,8 @@ export function getFilePath(
     let filePath = '';
     let cachedPath: string | undefined;
 
-    if (settings.sounds_alphabetical) {
-        key = isAlphabetical(key) ? 'default' : key;
+    if (!settings.sounds_alphabetical && isAlphabetical(key)) {
+        key = 'default';
     }
 
     if (!settings.sounds_harmonic && isHarmonic(key)) {
