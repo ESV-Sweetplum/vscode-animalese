@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.4
+
+- Fixed `sounds.alphabetical` setting being reversed.
+
 ## v0.2.3
 
 - Added the `sounds.alphabetical` configuration to toggle individual sounds for alphabetical characters.
