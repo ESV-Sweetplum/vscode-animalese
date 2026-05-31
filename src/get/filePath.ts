@@ -2,7 +2,7 @@ import path from 'path';
 import { isAlphabetical, isHarmonic, isSymbolic } from '../isParticularType';
 import { HARMONIC_CHARACTERS } from '../constants/charTypes';
 import { settings } from '../settings/pluginSettings';
-import { VOICE_LIST } from '../constants/voiceList';
+import getCacheString from './cacheString';
 
 const PATH_CACHE: Map<string, string> = new Map();
 
@@ -17,7 +17,7 @@ export function getFilePath(
     extensionPath: string,
     key: string,
     vocalIndex: number,
-    pluginSettings: typeof settings
+    pluginSettings: typeof settings,
 ): string {
     if (pluginSettings.soundOverride) return pluginSettings.soundOverride; // Reminder that soundOverride is an absolute path to the desired sound.
 
@@ -28,16 +28,16 @@ export function getFilePath(
         key = isAlphabetical(key) ? 'default' : key;
     }
 
-    if (settings.harmonicSFX) {
-        key = !isHarmonic(key) ? key : 'default';
+    if (!settings.harmonicSFX && isHarmonic(key)) {
+        key = 'default';
     }
 
-    cachedPath = PATH_CACHE.get(
-        `${key}${VOICE_LIST.indexOf(
-            settings.voice
-        )}${+settings.specialPunctuation}${+settings.onlySFX}${+settings.harmonicSFX}`
-    );
-    
+    if (settings.diacriticRecognition) {
+        key = key.normalize('NFD').replace(/[ ̀-◌ͯ]/g, '');
+    }
+
+    cachedPath = PATH_CACHE.get(getCacheString(key));
+
     if (cachedPath && !settings.soundOverride) {
         return cachedPath;
     }
@@ -48,14 +48,14 @@ export function getFilePath(
         'audio',
         'animalese',
         vocalIndex <= 3 ? 'female' : 'male',
-        `voice_${(vocalIndex % 4) + 1}`
+        `voice_${(vocalIndex % 4) + 1}`,
     );
     const vocalsPath = path.join(
         extensionPath,
         'audio',
         'vocals',
         vocalIndex <= 3 ? 'female' : 'male',
-        `voice_${(vocalIndex % 4) + 1}`
+        `voice_${(vocalIndex % 4) + 1}`,
     );
     const sfxPath = path.join(extensionPath, 'audio', 'sfx');
 
@@ -65,27 +65,22 @@ export function getFilePath(
             break;
         }
         case isHarmonic(key): {
-            filePath = path.join(
-                vocalsPath,
-                `${HARMONIC_CHARACTERS.indexOf(key)}.mp3`
-            );
+            if (pluginSettings.harmonicSFX) {
+                filePath = path.join(vocalsPath, `${HARMONIC_CHARACTERS.indexOf(key)}.mp3`);
+            } else {
+                filePath = path.join(sfxPath, 'default.mp3');
+            }
             break;
         }
         case key === '!' || key === '?' || key.includes('\n'): {
             if (pluginSettings.specialPunctuation) {
                 const noise = { '!': 'Gwah', '?': 'Deska', '\n': 'OK' };
-                filePath = path.join(
-                    animalesePath,
-                    `${noise[key as keyof typeof noise]}.mp3`
-                );
+                filePath = path.join(animalesePath, `${noise[key as keyof typeof noise]}.mp3`);
                 break;
             }
         }
         case isSymbolic(key): {
-            filePath = path.join(
-                sfxPath,
-                `${symbolToName(key) ?? 'default'}.mp3`
-            );
+            filePath = path.join(sfxPath, `${symbolToName(key) ?? 'default'}.mp3`);
             break;
         }
         case ['tab', 'backspace'].includes(key): {
@@ -97,10 +92,7 @@ export function getFilePath(
             break;
         }
     }
-    PATH_CACHE.set(
-        `${key}${settings.voice}${+settings.specialPunctuation}${+settings.onlySFX}${+settings.harmonicSFX}`,
-        filePath
-    );
+    PATH_CACHE.set(getCacheString(key), filePath);
 
     return filePath;
 }

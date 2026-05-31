@@ -36,13 +36,17 @@
                 "command": "vscode-animalese.setVoice",
                 "title": "vscode-animalese: Set Animalese Voice"
             },
-                     {
+            {
                 "command": "vscode-animalese.toggleSFX",
                 "title": "vscode-animalese: Toggle Only Animalese SFX"
             },
             {
                 "command": "vscode-animalese.toggleHarmonicSFX",
                 "title": "vscode-animalese: Toggle Harmonic Animalese SFX"
+            },
+            {
+                "command": "vscode-animalese.toggleDiacriticRecognition",
+                "title": "vscode-animalese: Toggle Diacritic Recognition"
             }
         ],
         "configuration": {
@@ -107,16 +111,21 @@
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "If checked, the audio volume will fall off at an exponential rate instead of a linear one."
-                }, 
+                },
                 "vscode-animalese.onlySFX": {
                     "type": "boolean",
                     "default": false,
-                    "markdownDescription": "If checked, only sound effects (non-vocal sounds) will be played when typing."
+                    "markdownDescription": "If checked, only non-vocal sounds will be played when typing alphabetical characters."
                 },
                 "vscode-animalese.harmonicSFX": {
                     "type": "boolean",
-                    "default": false,
-                    "markdownDescription": "If checked, sound effects will have harmonic overtones added to them for a richer sound."
+                    "default": true,
+                    "markdownDescription": "If checked, number keys and adjacent keys (- and = keys) will play harmonic sounds, similar to a piano."
+                },
+                "vscode-animalese.diacriticRecognition": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "If checked, letters with diacritics will play the sound that the diacritic-less letter would play. Otherwise, plays the default sound on specified key presses."
                 }
             }
         }
@@ -145,7 +154,7 @@
         "node-loader": "^2.1.0",
         "ts-jest": "^29.4.0",
         "ts-loader": "^9.5.2",
-        "typescript": "^5.8.3",
+        "typescript": "^6.0.3",
         "webpack": "^5.99.7",
         "webpack-cli": "^6.0.1"
     },

@@ -12,34 +12,35 @@
 
 ## Special Thanks To:
 
--   [DageXVIII](https://github.com/joshxviii/animalese-typing) for the original chrome extension and audio assets; without them, none of this would have been possible.
--   Mel for the introduction to animalese-style keysounds.
--   Amity for the icon.
--   [ircam-ismm](https://github.com/ircam-ismm) for the fantastic [`node-web-audio-api`](https://www.npmjs.com/package/node-web-audio-api) package, which served as a great low-latency alternative to the simpler albeit jankier [`sound-play`](https://www.npmjs.com/package/sound-play) package.
+- [DageXVIII](https://github.com/joshxviii/animalese-typing) for the original chrome extension and audio assets; without them, none of this would have been possible.
+- Mel for the introduction to animalese-style keysounds.
+- Amity for the icon.
+- [ircam-ismm](https://github.com/ircam-ismm) for the fantastic [`node-web-audio-api`](https://www.npmjs.com/package/node-web-audio-api) package, which served as a great low-latency alternative to the simpler albeit jankier [`sound-play`](https://www.npmjs.com/package/sound-play) package.
 
 ## Command List
 
 > **All commands are prefaced with the namespace `vscode-animalese:`.**
 
--   `Enable/Disable/Toggle Animalese Sounds`: Self-explanatory.
--   `Set Animalese Volume/Voice`: Self-explanatory.
--   `Toggle Only Animalese SFX`: Toggles between playing only sound effects (no vocal sounds) or all sounds.
--   `Toggle Harmonic Animalese SFX`: Toggles whether sound effects include harmonic overtones for richer sound.
+- `Enable/Disable/Toggle Animalese Sounds`: Self-explanatory.
+- `Set Animalese Volume/Voice`: Self-explanatory.
+- `Toggle Only Animalese SFX`: Toggles between playing only sound effects (no vocal sounds) or all sounds.
+- `Toggle Harmonic Animalese SFX`: Toggles top row keys (number keys and - or =) playing harmonic sounds.
 
 ## More Detailed Configuration List
 
 > ⚠️ **The execution of this plugin is very rudimentary, and has not been thoroughly tested on any other platform besides Windows.** If there is a pressing issue to solve, please raise an issue within the [GitHub repository](https://github.com/ESV-Sweetplum/vscode-animalese).
 
--   `vscode-animalese.volume` (integer between 0-100): Controls the volume of the keysounds, where 100% is max volume.
--   `vscode-animalese.voice` (selectable from 8 different voices): Customize the timbre of the keysounds with 8 different voice profiles (yoinked from [`animalese-typing`](https://www.npmjs.com/package/sound-play)).
--   `vscode-animalese.specialPunctuation` (boolean): By default, `!`, `?` and `Enter` produce special sounds that represent the ends of sentences. To override this with a standard voice, set this setting to `true`. This will result in the following characters-to-sounds map:
-    -   `?` -> `です？` or "desuka?"
-    -   `!` -> `グア~` or "gwah~"
-    -   `Enter` -> `おーけ` or "OK"
--   `vscode-animalese.intonation.louderUppercase` (positive number): Adjusts the output volume produced by uppercase letters. To be exact, the number used here should indicate how many percent above the normal volume the uppercase sounds should use.
--   `vscode-animalese.intonation.falloffTime` (positive number): Determines how many seconds it takes for the audio to fade out (although each keysound is not above a second regardless, so this value should be like 0.75 at most).
--   `vscode-animalese.intonation.pitchVariation` (positive integer): Adjusts the strength of pitch variation between duplicate key pressed. If set to 0, all keypresses of the same key (such as pressing the `e` key 7 times) will sound identical.
--   `vscode-animalese.intonation.switchToExponentialFalloff` (boolean): If set to true, the audio level (in decibels) will decrease exponentially instead of linearly. Turning this on creates a slightly more "realistic" falloff, as the decibal system is inherently exponential.
--   `vscode-animalese.soundOverride` (absolute path): Replace **_ALL_** sounds produced by `vscode-animalese` with a sound of your choice. Supports `.mp3`, `.wav`, `.aac`, and `.ogg`.
--   `vscode-animalese.onlySFX` (boolean): If set to true, only sound effects (non-vocal sounds) will be played when typing. Alphabetical characters will use a default SFX sound instead of animalese voices.
--   `vscode-animalese.harmonicSFX` (boolean): If set to true, sound effects will have harmonic overtones added to them for a richer, more musical sound. Harmonic characters will use the default sound when this is enabled.
+- `vscode-animalese.volume` (integer between 0-100): Controls the volume of the keysounds, where 100% is max volume.
+- `vscode-animalese.voice` (selectable from 8 different voices): Customize the timbre of the keysounds with 8 different voice profiles (yoinked from [`animalese-typing`](https://www.npmjs.com/package/sound-play)).
+- `vscode-animalese.specialPunctuation` (boolean): By default, `!`, `?` and `Enter` produce special sounds that represent the ends of sentences. To override this with a standard voice, set this setting to `true`. This will result in the following characters-to-sounds map:
+    - `?` -> `です？` or "desuka?"
+    - `!` -> `グア~` or "gwah~"
+    - `Enter` -> `おーけ` or "OK"
+- `vscode-animalese.intonation.louderUppercase` (positive number): Adjusts the output volume produced by uppercase letters. To be exact, the number used here should indicate how many percent above the normal volume the uppercase sounds should use.
+- `vscode-animalese.intonation.falloffTime` (positive number): Determines how many seconds it takes for the audio to fade out (although each keysound is not above a second regardless, so this value should be like 0.75 at most).
+- `vscode-animalese.intonation.pitchVariation` (positive integer): Adjusts the strength of pitch variation between duplicate key pressed. If set to 0, all keypresses of the same key (such as pressing the `e` key 7 times) will sound identical.
+- `vscode-animalese.intonation.switchToExponentialFalloff` (boolean): If set to true, the audio level (in decibels) will decrease exponentially instead of linearly. Turning this on creates a slightly more "realistic" falloff, as the decibal system is inherently exponential.
+- `vscode-animalese.soundOverride` (absolute path): Replace **_ALL_** sounds produced by `vscode-animalese` with a sound of your choice. Supports `.mp3`, `.wav`, `.aac`, and `.ogg`.
+- `vscode-animalese.onlySFX` (boolean): If set to true, only sound effects (non-vocal sounds) will be played when typing. Alphabetical characters will use a default SFX sound instead of animalese voices.
+- `vscode-animalese.harmonicSFX` (boolean): If set to true, number keys and adjacent keys (- and = keys) will play harmonic sounds, similar to a piano. Harmonic keys will use the default sound when this is disabled.
+- `vscode-animalese.diacriticRecognition` (boolean): If set to true, letters with diacritics will play the sound that the diacritic-less letter would play. Otherwise, plays the default sound on specified key presses.

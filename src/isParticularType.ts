@@ -1,14 +1,4 @@
-import {
-    HARMONIC_CHARACTERS,
-    MELODIC_CHARACTERS,
-    NUMBERS,
-    SYMBOLS,
-} from './constants/charTypes';
-
-export function isMelodic(char: string | number): boolean {
-    if (typeof char === 'number') return true;
-    return MELODIC_CHARACTERS.includes(char);
-}
+import { HARMONIC_CHARACTERS, NUMBERS, SYMBOLS } from './constants/charTypes';
 
 export function isAlphabetical(char: string | number): boolean {
     if (typeof char === 'number') return false;
