@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.5
+
+- Fixed some boolean settings not being properly saved when changing other settings.
+
 ## v0.2.4
 
 - Fixed `sounds.alphabetical` setting being reversed.

@@ -1,7 +1,13 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 
+/**
+ * Maps an audio file's path to the direct audio data.
+ */
 const BUFFER_CACHE: Map<string, AudioBuffer> = new Map();
+/**
+ * Maps an audio file's path to the time in which the sound should start playing (to avoid whitespace).
+ */
 const DELAY_CACHE: Map<string, number> = new Map();
 
 interface AudioData {
@@ -16,10 +22,7 @@ interface AudioData {
  * @returns {AudioBuffer} A buffer containing all audio data to be played.
  * @returns {number} The amount of time, in seconds, to skip forward in order to avoid playing silence.
  */
-export default async function getAudioData(
-    filePath: string,
-    context: AudioContext
-): Promise<AudioData> {
+export default async function getAudioData(filePath: string, context: AudioContext): Promise<AudioData> {
     let audioBuffer: AudioBuffer;
     let cachedBuffer = BUFFER_CACHE.get(filePath);
     let cachedDelay = DELAY_CACHE.get(filePath);
@@ -31,14 +34,12 @@ export default async function getAudioData(
     const initialBuffer = fs.readFileSync(filePath);
     const fileBuffer = initialBuffer.buffer.slice(
         initialBuffer.byteOffset,
-        initialBuffer.byteOffset + initialBuffer.byteLength
+        initialBuffer.byteOffset + initialBuffer.byteLength,
     ); // Strip metadata from audio buffer
     try {
         audioBuffer = await context.decodeAudioData(fileBuffer);
     } catch (e) {
-        vscode.window.showErrorMessage(
-            'The provided custom sound is not a valid audio type.'
-        );
+        vscode.window.showErrorMessage('The provided custom sound is not a valid audio type.');
         throw new Error('The provided custom sound is not a valid audio type.');
     }
 

@@ -4,6 +4,9 @@ import { HARMONIC_CHARACTERS } from '../constants/charTypes';
 import { settings } from '../settings/pluginSettings';
 import getCacheString from './cacheString';
 
+/**
+ * Maps a cache string identifier to a physical path that the system can pull audio from.
+ */
 const PATH_CACHE: Map<string, string> = new Map();
 
 /**
@@ -24,21 +27,21 @@ export function getFilePath(
     let filePath = '';
     let cachedPath: string | undefined;
 
-    if (!settings.sounds_alphabetical && isAlphabetical(key)) {
+    if (!pluginSettings.sounds_alphabetical && isAlphabetical(key)) {
         key = 'default';
     }
 
-    if (!settings.sounds_harmonic && isHarmonic(key)) {
+    if (!pluginSettings.sounds_harmonic && isHarmonic(key)) {
         key = 'default';
     }
 
-    if (settings.sounds_diacriticRecognition) {
+    if (pluginSettings.sounds_diacriticRecognition) {
         key = key.normalize('NFD').replace(/[ ̀-◌ͯ]/g, '');
     }
 
     cachedPath = PATH_CACHE.get(getCacheString(key));
 
-    if (cachedPath && !settings.sounds_override) {
+    if (cachedPath && !pluginSettings.sounds_override) {
         return cachedPath;
     }
 

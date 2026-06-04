@@ -17,11 +17,11 @@ export let extensionEnabled = true;
 export const setExtensionEnabled = (val: boolean) => (extensionEnabled = val);
 
 export function activate(context: vscode.ExtensionContext) {
-    loadSettings(true);
+    loadSettings();
 
     vscode.workspace.onDidChangeConfiguration(event => {
         if (!event.affectsConfiguration('vscode-animalese')) return;
-        loadSettings(false); // Needed to update the `settings` variable for immediate effect.
+        loadSettings(); // Needed to update the `settings` variable for immediate effect.
     });
 
     const commands = [

@@ -5,20 +5,15 @@ import { settings } from './pluginSettings';
  * ### Gets a specified setting's value.
  * @param key The vscode id of the setting, with underscores instead of dots. For example, to find `vscode-animalese.intonation.falloffTime`, this should be `intonation_falloffTime`.
  * @param defaultValue If the specified config doesn't exist, fallback to this default value.
- * @param changedConfig Whether or not the config needs to be obtained because it recently changed.
  * @returns The configuration's value, or the fallback if the setting doesn't exist.
  */
-export function getConfig<T>(
-    key: string,
-    defaultValue: T,
-    changedConfig = false
-): T {
+export function getConfig<T>(key: string, defaultValue: T): T {
     const config = vscode.workspace.getConfiguration('vscode-animalese');
 
     const configKey = key.replaceAll('_', '.');
-    if (changedConfig) {
-        return config.inspect<T>(configKey)?.globalValue ?? defaultValue;
-    }
+    // if (changedConfig) {
+    //     return config.inspect<T>(configKey)?.globalValue ?? defaultValue;
+    // }
     return config.get<T>(configKey) ?? defaultValue;
 }
 

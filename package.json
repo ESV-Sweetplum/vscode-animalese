@@ -2,7 +2,7 @@
     "name": "vscode-animalese",
     "displayName": "VSCode Animalese",
     "description": "Makes animal crossing sounds whenever you type. Highly customizable with very low latency, written with a Node.js adaptation of the Web Audio API.",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "publisher": "AidanHsiao",
     "engines": {
         "vscode": "^1.101.0"
@@ -113,6 +113,10 @@
                     "default": true,
                     "markdownDescription": "If checked, letters with diacritics will play the sound that the diacritic-less letter would play. Otherwise, plays the default sound on specified key presses."
                 }
+            },
+            "default": {
+                "sounds.alphabetical": true,
+                "sounds.harmonic": true
             }
         }
     },
